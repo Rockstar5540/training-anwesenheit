@@ -3,104 +3,162 @@
 <head>
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width,initial-scale=1'>
-<meta name='theme-color' content='#2e7d32'>
+<meta name='theme-color' content='#000000'>
 <link rel='manifest' href='manifest.json'>
-<title>OZ-Training</title>
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap'>
+<title>OZtraining – Trainings buchen</title>
 <style>
+:root{--gold:#dad28a;--slate:#617279;--card:#141414;--line:#2a2a2a;--mut:#b5b5b5;--bad:#e57373}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{font-family:system-ui,sans-serif;margin:0;background:#f1f5f1;color:#111}
+html{background:#000}
+body{font-family:Merriweather,Georgia,'Times New Roman',serif;margin:0;color:#fff;line-height:1.4;background-color:#050505;background-image:repeating-linear-gradient(60deg,#ffffff09 0 1px,transparent 1px 36px),repeating-linear-gradient(-60deg,#ffffff09 0 1px,transparent 1px 36px),repeating-linear-gradient(0deg,#ffffff07 0 1px,transparent 1px 36px);background-attachment:fixed}
+button,input,select{font-family:inherit}
 button{cursor:pointer;transition:transform .08s,filter .08s,opacity .08s}
-button:active:not(:disabled){transform:scale(.95);filter:brightness(.8)}
+button:active:not(:disabled){transform:scale(.96);filter:brightness(.8)}
 button.busy{opacity:.5;pointer-events:none}
-header{background:#2e7d32;color:#fff;padding:12px;position:sticky;top:0;z-index:2}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.topr{display:flex;align-items:center;gap:8px}
-#who{background:#fff3;border-radius:14px;padding:6px 12px;font-size:15px;font-weight:600}
-h1{font-size:18px;margin:0}
-header button{background:#fff3;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:16px}
-.nav{display:flex;justify-content:space-between;align-items:center}
-.nav button{font-size:18px}
-main{padding:10px;max-width:600px;margin:auto}
-.err{background:#ffebee;color:#c62828;padding:10px;border-radius:8px;margin-bottom:10px}
-.box{display:flex;gap:6px;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;padding:10px;margin-bottom:10px;box-shadow:0 1px 3px #0002}
-.box input{flex:1;padding:12px;font-size:16px;border:1px solid #bbb;border-radius:8px;min-width:0}
-.box button{padding:12px 16px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
-.mbar{background:#e8f5e9;border:2px solid #2e7d32}
-.small{font-size:13px;color:#2e7d32}
-.bigname{font-size:22px;font-weight:700}
-#admin{background:#fff;border-radius:10px;padding:10px;margin-bottom:12px;box-shadow:0 1px 3px #0002}
-#admin h2{margin:0 0 8px;font-size:18px}
-#admin details{border:0;margin-bottom:8px;padding:0}
-#admin summary{background:#e8f5e9;border-radius:10px;padding:14px;font-size:17px;font-weight:700;cursor:pointer}
-#admin details[open] summary{background:#2e7d32;color:#fff}
-.card{background:#f1f5f1;border-radius:10px;padding:12px;margin:10px 0}
-.bigtxt{font-size:18px;font-weight:700}
-.hint{color:#555;margin:6px 0}
+header{background:rgba(20,18,12,.94);position:sticky;top:0;z-index:5;padding:10px 12px;border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+#logo{height:46px;width:auto}
+.bt1{font-size:17px;font-weight:700;line-height:1.15}
+.bt2{font-size:11px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase}
+.topr{display:flex;align-items:center;gap:8px;flex-shrink:0}
+#who{background:var(--gold);color:#000;border-radius:14px;padding:5px 11px;font-size:13px;font-weight:700;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header button{background:#ffffff1f;color:#fff;border:1px solid #ffffff33;border-radius:8px;padding:8px 12px;font-size:14px}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.nav button{font-size:18px;padding:6px 18px}
+#wk{font-size:14px;color:var(--gold);font-weight:700}
+#hero{background:#000}
+#heroimg{height:130px;background-size:cover;background-position:center}
+.hero1{text-align:center;padding:14px 8px 10px}
+.hero1 b{font-size:16px}
+.hero1 i{display:block;color:var(--gold);font-style:normal;margin-top:2px}
+.checks{background:var(--gold);color:#000;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:10px 6px;font-size:11px;font-weight:700;text-align:center;line-height:1.25}
+.chk{width:24px;height:24px;border:2px solid #000;border-radius:50%;margin:0 auto 4px;display:grid;place-items:center;font-size:13px}
+main{padding:12px;max-width:640px;margin:auto}
+.err{background:#3a1515;color:#ffb4ab;padding:10px;border-radius:8px;margin-bottom:10px}
+.box{display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.box input{flex:1;min-width:0;padding:13px;font-size:16px;border:1px solid #444;border-radius:8px;background:#000;color:#fff}
+.box button{padding:13px 18px;font-size:16px;border:0;border-radius:8px;background:var(--gold);color:#000;font-weight:700}
+.mbar{border-color:var(--gold);background:#17160f}
+.mbar button{background:var(--slate);color:#fff}
+.small{font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em}
+.bigname{font-size:24px;font-weight:700}
+#tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto}
+#tabs button{flex:1;min-width:max-content;padding:12px 10px;font-size:14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:#fff;font-weight:700}
+#tabs button.on{background:var(--gold);color:#000;border-color:var(--gold)}
+.pn{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.pn h3{margin:14px 0 6px;font-size:16px;color:var(--gold)}
+.pn h3:first-child{margin-top:0}
+.card{background:#0e0e0e;border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0}
+.bigtxt{font-size:17px;font-weight:700}
+.hint{color:var(--mut);margin:6px 0;font-size:14px}
 .bigrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.big{flex:1;min-height:50px;padding:14px 18px;font-size:17px;border:0;border-radius:10px;background:#2e7d32;color:#fff}
-.big.sec{background:#777}
+.big{flex:1;min-height:50px;padding:14px 18px;font-size:16px;border:0;border-radius:10px;background:var(--gold);color:#000;font-weight:700}
+.big.sec,dialog button.sec{background:var(--slate);color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
 .grid h3,.grid .bigrow{grid-column:1/-1;margin:0}
-.fld{display:flex;flex-direction:column;font-size:13px;color:#555;gap:4px}
-.fld select,.fld input{padding:12px;font-size:16px;border:1px solid #bbb;border-radius:8px;color:#111;width:100%;background:#fff}
+.fld{display:flex;flex-direction:column;font-size:13px;color:var(--mut);gap:4px}
+.fld select,.fld input,.row input,.row select,.srch{padding:12px;font-size:16px;border:1px solid #444;border-radius:8px;color:#fff;width:100%;background:#000}
 .row{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}
-.row input,.row select{flex:1;min-width:90px;padding:12px;font-size:16px;border:1px solid #bbb;border-radius:8px}
+.row input,.row select{flex:1;min-width:90px;width:auto}
+.srch{margin:10px 0 4px}
 .mono{font-family:monospace;letter-spacing:1px}
-.row button,dialog button{min-height:46px;padding:10px 14px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
-.row button.sec{background:#777}
-.pl{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #eee}
-.vitem{padding:10px 0;border-top:1px solid #eee}
-.vt1{font-weight:700;font-size:17px}
-.vt2{color:#444;margin:2px 0 6px}
-.mrow{padding:10px 0;border-top:1px solid #eee}
-.mname{font-weight:700;font-size:17px}
-.mcode{font-family:monospace;font-size:22px;letter-spacing:2px;background:#f1f5f1;border-radius:6px;padding:4px 10px;display:inline-block;margin:6px 0}
+.row button,dialog button{min-height:46px;padding:10px 14px;font-size:15px;border:0;border-radius:8px;background:var(--gold);color:#000;font-weight:700}
+.row button.sec{background:var(--slate);color:#fff}
+.dt summary{padding:13px;border:1px dashed var(--gold);border-radius:10px;color:var(--gold);font-weight:700;cursor:pointer;margin-top:10px}
+.pl{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.vitem{padding:10px 0;border-top:1px solid var(--line)}
+.vt1{font-weight:700;font-size:16px}
+.vt2{color:var(--mut);margin:2px 0 6px;font-size:14px}
+.mrow{padding:10px 0;border-top:1px solid var(--line)}
+.mname{font-weight:700;font-size:16px}
+.mcode{font-family:monospace;font-size:22px;letter-spacing:2px;background:#000;border:1px solid #333;border-radius:6px;padding:4px 10px;display:inline-block;margin:6px 0;color:var(--gold)}
 .macts{display:flex;gap:6px;flex-wrap:wrap}
-.macts button{min-height:44px;padding:9px 12px;font-size:14px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
-.macts button.sec{background:#777}
-.macts button.danger{background:#c62828}
-.day{background:#fff;border-radius:10px;margin-bottom:10px;box-shadow:0 1px 3px #0002;overflow:hidden}
-.day.today{outline:3px solid #2e7d32}
-.dh{padding:10px 12px;background:#e3efe3;font-weight:600}
-.tr{padding:10px 12px;border-top:1px solid #eee}
-.tr.off{background:#f5f5f5}
-.th{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
-.cnt{color:#2e7d32;font-weight:600;margin-left:auto}
-.badge{font-size:12px;border-radius:10px;padding:3px 9px;color:#fff;background:#c62828}
-.badge.mv{background:#f9a825;color:#000}
-.who{color:#444;margin-bottom:8px}
+.macts button{min-height:44px;padding:9px 12px;font-size:13px;border:0;border-radius:8px;background:var(--gold);color:#000;font-weight:700}
+.macts button.sec{background:var(--slate);color:#fff}
+.macts button.danger{background:#b3261e;color:#fff}
+.day{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.day.today{border-color:var(--gold)}
+.dh{padding:10px 14px;background:var(--gold);color:#000;font-weight:700}
+.tr{padding:12px 14px;border-top:1px solid var(--line)}
+.tr.off{opacity:.7}
+.th{display:flex;align-items:center;gap:12px}
+.th.click{cursor:pointer}
+.tm{font-size:20px;font-weight:700;color:var(--gold);min-width:60px}
+.tinfo{flex:1;min-width:0}
+.tt1{font-weight:700}
+.tt2{font-size:13px;color:var(--mut)}
+.cnt{font-weight:700;color:var(--gold);white-space:nowrap}
+.cnt.full{color:var(--bad)}
+.chev{color:var(--mut);margin-left:6px}
+.badge{font-size:11px;border-radius:10px;padding:2px 8px;margin-left:8px;color:#fff;background:#b3261e;font-weight:400}
+.badge.mv{background:var(--gold);color:#000}
+.who{color:var(--mut);margin:8px 0 0;font-size:14px}
+.tbody{margin-top:10px}
+.trow{padding:8px 0;border-top:1px solid var(--line)}
 .tacts{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 2px}
-.tacts button{flex:1;min-height:46px;font-size:15px;border:0;border-radius:8px;background:#777;color:#fff;padding:8px 10px}
-.tacts button.warn{background:#ef6c00}
-.tacts button.danger{background:#c62828}
-.tacts button.ok{background:#2e7d32}
-.btn{width:100%;padding:14px;font-size:17px;border:2px solid #2e7d32;border-radius:10px;background:#fff;color:#2e7d32}
-.btn.on{background:#2e7d32;color:#fff}
-.btn:disabled{border-color:#999;color:#999;background:#eee}
-label.p{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:17px}
-label.p input{width:24px;height:24px}
-label.p.on{background:#e8f5e9}
-.empty{padding:12px;color:#777}
-dialog{border:0;border-radius:12px;padding:16px;width:90%;max-width:380px}
-dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:8px;border:1px solid #bbb;border-radius:8px}
+.tacts button{flex:1;min-height:46px;font-size:14px;border:0;border-radius:8px;background:var(--slate);color:#fff;padding:8px 10px;font-weight:700}
+.tacts button.warn{background:#c77d1a}
+.tacts button.danger{background:#b3261e}
+.tacts button.ok{background:var(--gold);color:#000}
+.btn{width:100%;padding:15px;font-size:17px;border:2px solid var(--gold);border-radius:10px;background:transparent;color:var(--gold);font-weight:700;margin-top:10px}
+.btn.on{background:var(--gold);color:#000}
+.btn:disabled{border-color:#555;color:#777;background:#1a1a1a}
+label.p{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:16px;border-top:1px solid var(--line)}
+label.p input{width:24px;height:24px;accent-color:var(--gold)}
+label.p.on{color:var(--gold)}
+.empty{padding:12px;color:var(--mut)}
+footer{background:#000;margin-top:24px;padding:24px 16px 32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;border-top:1px solid var(--line)}
+footer h4{margin:0 0 10px;text-transform:uppercase;font-size:13px}
+footer div{font-size:14px}
+footer a.fb{display:inline-block;background:var(--slate);color:#fff;border-radius:10px;padding:10px 14px;margin:0 6px 8px 0;text-decoration:none;font-size:13px}
+dialog{background:#141414;color:#fff;border:1px solid var(--gold);border-radius:12px;padding:16px;width:90%;max-width:380px}
+dialog::backdrop{background:#000a}
+dialog input{display:block;width:100%;padding:11px;font-size:16px;margin-bottom:8px;border:1px solid #444;border-radius:8px;background:#000;color:#fff}
 dialog .fld{margin-bottom:10px}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#222;color:#fff;padding:12px 20px;border-radius:24px;z-index:10;max-width:90%;box-shadow:0 2px 8px #0005;opacity:0;pointer-events:none;transition:opacity .2s;text-align:center}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--gold);color:#000;font-weight:700;padding:12px 20px;border-radius:24px;z-index:10;max-width:90%;box-shadow:0 2px 10px #000a;opacity:0;pointer-events:none;transition:opacity .2s;text-align:center}
 #toast.show{opacity:1}
-#toast.bad{background:#c62828}
+#toast.bad{background:#b3261e;color:#fff}
 </style>
 </head>
 <body>
 <header>
-<div class='top'><h1>OZ-Training</h1><div class='topr'><span id='who' hidden></span><button id='loginBtn'>Admin</button></div></div>
-<div class='nav'><button id='prev'>&lt;</button><span id='wk'></span><button id='next'>&gt;</button></div>
+<div class='top'>
+<div class='brand'><img id='logo' src='logo.png' alt='OZ' onerror='this.hidden=true'><div><div class='bt1'>Outdoor Zirkeltraining</div><div class='bt2'>OZtraining · Trainings buchen</div></div></div>
+<div class='topr'><span id='who' hidden></span><button id='loginBtn'>Admin</button></div>
+</div>
+<div class='nav' id='weeknav'><button id='prev'>&lt;</button><span id='wk'></span><button id='next'>&gt;</button></div>
 </header>
+<section id='hero'>
+<div id='heroimg' hidden></div>
+<div class='hero1'><b>Krafttraining an der frischen Luft</b><i>..gemeinsam..</i></div>
+<div class='checks'><div><div class='chk'>✓</div>den ganzen Körper trainieren</div><div><div class='chk'>✓</div>das Herzkreislauf-System stärken</div><div><div class='chk'>✓</div>die Muskeln formen</div><div><div class='chk'>✓</div>die Balance verbessern</div></div>
+</section>
 <main>
 <form id='fc' class='box'><input id='code' placeholder='Dein Code' autocomplete='off' autocapitalize='characters'><button>Anmelden</button></form>
 <div id='mbar' class='box mbar' hidden><div><div class='small'>Angemeldet als</div><div id='mname' class='bigname'></div></div><button id='mout' type='button'>Abmelden</button></div>
+<nav id='tabs' hidden><button type='button' data-t='week'>Woche</button><button type='button' data-t='plan'>Wochenplan</button><button type='button' data-t='mem'>Mitglieder</button><button type='button' data-t='set'>Einstellungen</button></nav>
 <section id='admin' hidden>
-<h2>Admin</h2>
-<details open><summary>Wochenplan (Vorlage)</summary>
+<div class='pn' data-p='week'>
+<div id='today'></div>
+<details class='dt'><summary>+ Einmaliges Training anlegen</summary>
+<form id='ft' class='grid card'>
+<label class='fld'>Datum<input id='td' type='date'></label>
+<label class='fld'>Uhrzeit<select id='tt'></select></label>
+<label class='fld'>Typ<select id='tty'></select></label>
+<label class='fld'>Ort<select id='tlo'></select></label>
+<label class='fld'>Max. Teilnehmer<input id='tmax' type='number' min='1' value='12'></label>
+<label class='fld'>Notiz (optional)<input id='tn'></label>
+<div class='bigrow'><button class='big'>+ Training anlegen</button></div>
+</form>
+</details>
+</div>
+<div class='pn' data-p='plan' hidden>
+<h3>Wochenplan (Vorlage)</h3>
 <div class='card'>
 <div id='autoState' class='bigtxt'></div>
 <div id='autoInfo' class='hint'></div>
@@ -116,33 +174,30 @@ dialog .fld{margin-bottom:10px}
 <label class='fld'>Max. Teilnehmer<input id='vmax' type='number' min='1' value='12'></label>
 <div class='bigrow'><button id='vsave' class='big'>+ Eintrag hinzufügen</button><button type='button' id='vcancel' class='big sec' hidden>Abbrechen</button></div>
 </form>
-</details>
-<details><summary>Einmaliges Training anlegen</summary>
-<form id='ft' class='grid card'>
-<label class='fld'>Datum<input id='td' type='date'></label>
-<label class='fld'>Uhrzeit<select id='tt'></select></label>
-<label class='fld'>Typ<select id='tty'></select></label>
-<label class='fld'>Ort<select id='tlo'></select></label>
-<label class='fld'>Max. Teilnehmer<input id='tmax' type='number' min='1' value='12'></label>
-<label class='fld'>Notiz (optional)<input id='tn'></label>
-<div class='bigrow'><button class='big'>+ Training anlegen</button></div>
-</form>
-</details>
-<details><summary>Mitglieder &amp; Codes</summary>
+</div>
+<div class='pn' data-p='mem' hidden>
+<h3>Neues Mitglied</h3>
 <form id='fp' class='row'><input id='pn' placeholder='Name'><input id='pc' class='mono' placeholder='Code (mind. 8 Zeichen)' autocomplete='off'><button type='button' id='pg' class='sec'>Neu erzeugen</button><button>+ Mitglied</button></form>
+<h3>Alle Mitglieder</h3>
+<input id='msearch' type='search' class='srch' placeholder='Name suchen …' autocomplete='off'>
+<div id='mcount' class='hint'></div>
 <div id='plist'></div>
-</details>
-<details><summary>Trainingstypen</summary>
+</div>
+<div class='pn' data-p='set' hidden>
+<h3>Trainingstypen</h3>
 <form id='fty' class='row'><input id='tyn' placeholder='z.B. Pilates'><button>+ Typ</button></form>
 <div id='tylist'></div>
-</details>
-<details><summary>Orte</summary>
+<h3>Orte</h3>
 <form id='fo' class='row'><input id='lon' placeholder='z.B. Turnhalle'><button>+ Ort</button></form>
 <div id='lolist'></div>
-</details>
+</div>
 </section>
 <div id='days'></div>
 </main>
+<footer id='foot'>
+<div><h4>Kontakt</h4><div>OZtraining<br>Carmen Sutter<br>Neuwiese 6<br>5305 Unterendingen</div></div>
+<div><h4>In Kontakt bleiben</h4><a class='fb' href='https://wa.me/41763254737'>WhatsApp</a><a class='fb' href='tel:+41763254737'>Anrufen</a><a class='fb' href='https://www.oztraining.ch'>Webseite</a><div>+41 76 325 47 37</div></div>
+</footer>
 <div id='toast'></div>
 <dialog id='dlg'>
 <form id='fl'>
@@ -150,7 +205,7 @@ dialog .fld{margin-bottom:10px}
 <input id='em' type='email' placeholder='E-Mail' autocomplete='username'>
 <input id='pw' type='password' placeholder='Passwort' autocomplete='current-password'>
 <div id='lerr' class='err' hidden></div>
-<button>Anmelden</button> <button type='button' id='cx' style='background:#777'>Abbrechen</button>
+<button>Anmelden</button> <button type='button' id='cx' class='sec'>Abbrechen</button>
 </form>
 </dialog>
 <dialog id='de'>
@@ -171,12 +226,16 @@ const ADMIN_UID='sbmdtQ4EObXPvRKpiqbgtdkJ5Dp2';
 const DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 const ALPHA='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const LOOKAHEAD=2;
+const MARK=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0x36f)+']','g');
 const app=initializeApp(cfg),db=getFirestore(app),auth=getAuth(app);
 const $=id=>document.getElementById(id);
 let types=[],locs=[],members=[],templates=[],trainings=[],att={},unsubA={},unsubT=null,unsubM=null,unsubV=null,unsubS=null,tt=null;
 let admin=false,member=null,user=null,off=0,settings={enabled:false},autoRan=false,genBusy=false,editV=null,editT=null;
+let adminTab=sessionStorage.getItem('tab')||'week',openT=new Set();
 const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const fmtDe=k=>k.slice(8,10)+'.'+k.slice(5,7)+'.'+k.slice(0,4);
+const norm=s=>(s||'').normalize('NFD').replace(MARK,'').toLowerCase();
+const byTime=(a,b)=>(a.time||'').localeCompare(b.time||'');
 const normCode=s=>(s||'').toUpperCase().replace(/[^A-Z0-9-]/g,'');
 const fmtCode=c=>c.length===8?c.slice(0,4)+' '+c.slice(4):c;
 function genCode(){const a=new Uint32Array(8);crypto.getRandomValues(a);let s='';a.forEach(v=>{s+=ALPHA[v%ALPHA.length]});return s}
@@ -222,7 +281,7 @@ function book(t,mid,on,force,btn){
 async function delTraining(t){const s=await getDocs(collection(db,'trainings',t.id,'att'));await Promise.all(s.docs.map(d=>deleteDoc(d.ref)));await deleteDoc(doc(db,'trainings',t.id))}
 function toggleCancel(t,b){
  const n=t.booked||0,on=t.status!=='cancelled';
- const q=on?'Training wirklich absagen?'+(n?' Achtung: '+n+' Buchung(en) sind betroffen. Die Mitglieder sehen «sabgesagt». Die Buchungen bleiben gespeichert.':' Die Mitglieder sehen «sabgesagt».'):'Training wieder aktivieren?';
+ const q=on?'Training wirklich absagen?'+(n?' Achtung: '+n+' Buchung(en) sind betroffen. Die Mitglieder sehen «abgesagt». Die Buchungen bleiben gespeichert.':' Die Mitglieder sehen «abgesagt».'):'Training wieder aktivieren?';
  if(!confirm(q))return;
  run(b,updateDoc(doc(db,'trainings',t.id),{status:on?'cancelled':'active'}),on?'Training abgesagt ✓':'Training wieder aktiv ✓');
 }
@@ -257,8 +316,12 @@ function fillRefs(){
 }
 function fillPlist(){
  const box=$('plist');box.innerHTML='';
+ const q=norm($('msearch').value).split(' ').filter(Boolean);
+ const list=members.filter(m=>q.every(w=>norm(m.name).includes(w)));
+ $('mcount').textContent=q.length?list.length+' von '+members.length+' Mitgliedern':members.length+' Mitglieder';
  if(!members.length)box.append(el('div','empty','Noch keine Mitglieder'));
- members.forEach(m=>{
+ else if(!list.length)box.append(el('div','empty','Kein Name gefunden. Bitte Schreibweise prüfen.'));
+ list.forEach(m=>{
   const r=el('div','mrow');
   r.append(el('div','mname',m.name),el('div','mcode',fmtCode(m.code)));
   const a=el('div','macts');
@@ -281,7 +344,7 @@ function editTemplate(v){
 function fillVlist(){
  const box=$('vlist');box.innerHTML='';
  if(!templates.length)box.append(el('div','empty','Noch keine Einträge im Wochenplan.'));
- templates.slice().sort((a,b)=>a.weekday-b.weekday||(a.time||'').localeCompare(b.time||'')).forEach(v=>{
+ templates.slice().sort((a,b)=>a.weekday-b.weekday||byTime(a,b)).forEach(v=>{
   const r=el('div','vitem');
   r.append(el('div','vt1',(DAYS[v.weekday]||'?')+' · '+v.time+' Uhr'),el('div','vt2',(tName(v.typeId)||'–')+' · '+(lName(v.locationId)||'–')+' · max. '+v.max+' Teilnehmer'));
   const a=el('div','macts');
@@ -372,38 +435,63 @@ async function delMember(m){
  const b=writeBatch(db);b.delete(doc(db,'codes',m.code));b.delete(doc(db,'members',m.id));await b.commit();
  toast('Mitglied gelöscht ✓');
 }
+function renderToday(){
+ const box=$('today');box.innerHTML='';
+ if(!admin)return;
+ const k=fmt(new Date()),c=el('div','card');
+ c.append(el('div','bigtxt','Heute · '+DAYS[(new Date().getDay()+6)%7]+' '+fmtDe(k).slice(0,6)));
+ if(off!==0){c.append(el('div','hint','Blättere mit den Pfeilen zur aktuellen Woche, um «Heute» zu sehen.'));box.append(c);return}
+ const list=trainings.filter(t=>t.date===k).sort(byTime);
+ if(!list.length)c.append(el('div','hint','Heute ist kein Training.'));
+ list.forEach(t=>{
+  const set=att[t.id] instanceof Set?att[t.id]:new Set();
+  const names=members.filter(p=>set.has(p.id)).map(p=>p.name);
+  const r=el('div','trow');
+  r.append(el('div','tt1',(t.time||'')+' · '+(tName(t.typeId)||'Training')+' · '+(lName(t.locationId)||'')+(t.status==='cancelled'?' (abgesagt)':'')));
+  r.append(el('div','tt2',(t.booked||0)+' / '+(t.max??12)+' · '+(names.length?names.join(', '):'noch niemand')));
+  c.append(r)});
+ box.append(c);
+}
 function render(){
  const m=monday(),root=$('days');root.innerHTML='';
  const e=new Date(m);e.setDate(e.getDate()+6);
  $('wk').textContent=m.getDate()+'.'+(m.getMonth()+1)+'. – '+e.getDate()+'.'+(e.getMonth()+1)+'.'+e.getFullYear();
  const today=fmt(new Date());
+ renderToday();
  for(let i=0;i<7;i++){
   const d=new Date(m);d.setDate(m.getDate()+i);const k=fmt(d);
   const box=el('div','day'+(k===today?' today':''));
-  box.append(el('div','dh',DAYS[i]+' '+d.getDate()+'.'+(d.getMonth()+1)+'.'));
-  const trs=trainings.filter(t=>t.date===k).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  box.append(el('div','dh',(k===today?'Heute · ':'')+DAYS[i]+' '+d.getDate()+'.'+(d.getMonth()+1)+'.'));
+  const trs=trainings.filter(t=>t.date===k).sort(byTime);
   if(!trs.length)box.append(el('div','empty','Kein Training'));
   trs.forEach(t=>{
-   const booked=t.booked||0,mx=t.max??12,free=mx-booked,canc=t.status==='cancelled';
-   const tr=el('div','tr'+(canc?' off':'')),h=el('div','th');
-   h.append(el('b','',(t.time||'')+' · '+(tName(t.typeId)||'–')+' · '+(lName(t.locationId)||'–')));
-   if(canc)h.append(el('span','badge','abgesagt'));else if(t.moved)h.append(el('span','badge mv','geändert'));
-   h.append(el('span','cnt',admin?booked+' / '+mx:(canc?'':(free>0?free+' frei':'belegt'))));
+   const booked=t.booked||0,mx=t.max??12,free=mx-booked,canc=t.status==='cancelled',open=openT.has(t.id);
+   const tr=el('div','tr'+(canc?' off':'')),h=el('div','th'+(admin?' click':''));
+   const info=el('div','tinfo'),l1=el('div','tt1',tName(t.typeId)||'Training');
+   if(canc)l1.append(el('span','badge','abgesagt'));else if(t.moved)l1.append(el('span','badge mv','geändert'));
+   info.append(l1,el('div','tt2',lName(t.locationId)||''));
+   const cnt=el('div','cnt'+(!admin&&!canc&&free<=0?' full':''),admin?booked+' / '+mx:(canc?'':(free>0?free+' frei':'belegt')));
+   if(admin)cnt.append(el('span','chev',open?'▾':'▸'));
+   h.append(el('div','tm',t.time||''),info,cnt);
+   if(admin)h.onclick=()=>{if(open)openT.delete(t.id);else openT.add(t.id);render()};
    tr.append(h);
    if(t.note)tr.append(el('div','who',t.note));
    if(admin){
-    const set=att[t.id] instanceof Set?att[t.id]:new Set();
-    if(!members.length)tr.append(el('div','empty','Noch keine Mitglieder'));
-    members.forEach(p=>{
-     const on=set.has(p.id),l=el('label','p'+(on?' on':''));
-     const cb=document.createElement('input');cb.type='checkbox';cb.checked=on;cb.disabled=canc;
-     cb.onchange=()=>{const force=cb.checked&&booked>=mx;if(force&&!confirm('Training ist belegt. Trotzdem hinzufügen?')){cb.checked=false;return}book(t,p.id,cb.checked,force,cb)};
-     l.append(cb,el('span','',p.name));tr.append(l)});
-    const ac=el('div','tacts');
-    mkBtn(ac,'Ändern','',()=>openEdit(t));
-    mkBtn(ac,canc?'Wieder aktivieren':'Absagen',canc?'ok':'warn',b=>toggleCancel(t,b));
-    mkBtn(ac,'Löschen','danger',b=>removeTraining(t,b));
-    tr.append(ac);
+    if(open){
+     const body=el('div','tbody');
+     const set=att[t.id] instanceof Set?att[t.id]:new Set();
+     if(!members.length)body.append(el('div','empty','Noch keine Mitglieder'));
+     members.forEach(p=>{
+      const on=set.has(p.id),l=el('label','p'+(on?' on':''));
+      const cb=document.createElement('input');cb.type='checkbox';cb.checked=on;cb.disabled=canc;
+      cb.onchange=()=>{const force=cb.checked&&booked>=mx;if(force&&!confirm('Training ist belegt. Trotzdem hinzufügen?')){cb.checked=false;return}book(t,p.id,cb.checked,force,cb)};
+      l.append(cb,el('span','',p.name));body.append(l)});
+     const ac=el('div','tacts');
+     mkBtn(ac,'Ändern','',()=>openEdit(t));
+     mkBtn(ac,canc?'Wieder aktivieren':'Absagen',canc?'ok':'warn',b=>toggleCancel(t,b));
+     mkBtn(ac,'Löschen','danger',b=>removeTraining(t,b));
+     body.append(ac);tr.append(body);
+    }
    }else if(canc){
     tr.append(el('div','empty','Dieses Training wurde abgesagt.'));
    }else if(member){
@@ -420,7 +508,7 @@ function attach(t){
  else if(member)unsubA[t.id]=onSnapshot(doc(db,'trainings',t.id,'att',member.id),s=>{att[t.id]=s.exists();render()},showErr);
 }
 function startAdmin(){
- if(!unsubM)unsubM=onSnapshot(query(collection(db,'members'),orderBy('name')),s=>{members=s.docs.map(d=>({id:d.id,...d.data()}));fillPlist();render()},showErr);
+ if(!unsubM)unsubM=onSnapshot(query(collection(db,'members'),orderBy('name')),s=>{members=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>norm(a.name).localeCompare(norm(b.name)));fillPlist();render()},showErr);
  if(!unsubV)unsubV=onSnapshot(collection(db,'templates'),s=>{templates=s.docs.map(d=>({id:d.id,...d.data()}));fillVlist()},showErr);
  if(!unsubS)unsubS=onSnapshot(doc(db,'settings','automation'),s=>{
   settings=s.exists()?{enabled:false,...s.data()}:{enabled:false};fillAuto();
@@ -431,14 +519,23 @@ function stopAdmin(){
  if(unsubM){unsubM();unsubM=null}if(unsubV){unsubV();unsubV=null}if(unsubS){unsubS();unsubS=null}
  members=[];templates=[];settings={enabled:false};autoRan=false;fillPlist();fillVlist();
 }
+function showTab(t){
+ adminTab=t;sessionStorage.setItem('tab',t);
+ document.querySelectorAll('.pn').forEach(p=>{p.hidden=p.dataset.p!==t});
+ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+ const wk=!admin||t==='week';
+ $('days').hidden=!wk;$('weeknav').hidden=!wk;
+}
 function updateUI(){
- $('admin').hidden=!admin;
+ $('admin').hidden=!admin;$('tabs').hidden=!admin;
+ $('hero').hidden=admin;$('foot').hidden=admin;
  $('loginBtn').textContent=admin?'Abmelden':'Admin';
  $('fc').hidden=admin||!!member;
  $('mbar').hidden=admin||!member;
  $('mname').textContent=member?member.name:'';
  const w=admin?'Admin':(member?member.name:'');
  $('who').textContent=w;$('who').hidden=!w;
+ showTab(adminTab);
 }
 function setRole(){
  Object.values(unsubA).forEach(f=>f());unsubA={};att={};
@@ -468,6 +565,9 @@ onSnapshot(query(collection(db,'locations'),orderBy('name')),s=>{locs=s.docs.map
 DAYS.forEach((n,i)=>$('vd').append(new Option(n,String(i))));
 timeOpts($('tt'),'18:00');timeOpts($('vt'),'18:00');
 $('td').value=fmt(new Date());
+const hi=new Image();hi.onload=()=>{$('heroimg').style.backgroundImage='url(hero.jpg)';$('heroimg').hidden=false};hi.src='hero.jpg';
+document.querySelectorAll('#tabs button').forEach(b=>{b.onclick=()=>{showTab(b.dataset.t);window.scrollTo(0,0)}});
+$('msearch').oninput=fillPlist;
 $('prev').onclick=()=>{off--;watchWeek()};
 $('next').onclick=()=>{off++;watchWeek()};
 $('pg').onclick=()=>{$('pc').value=genCode();toast('Neuer Code erzeugt')};
