@@ -16,12 +16,15 @@ header button{background:#fff3;color:#fff;border:0;border-radius:8px;padding:8px
 .nav{display:flex;justify-content:space-between;align-items:center}
 .nav button{font-size:18px}
 main{padding:10px;max-width:600px;margin:auto}
-.me{margin-bottom:10px;font-size:17px}
-.me select{padding:10px;font-size:17px;border-radius:8px;border:1px solid #bbb;max-width:70%}
 .err{background:#ffebee;color:#c62828;padding:10px;border-radius:8px;margin-bottom:10px}
+.box{display:flex;gap:6px;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;padding:10px;margin-bottom:10px;box-shadow:0 1px 3px #0002}
+.box input{flex:1;padding:12px;font-size:16px;border:1px solid #bbb;border-radius:8px;min-width:0}
+.box button{padding:12px 16px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
 #admin{background:#fff;border-radius:10px;padding:10px;margin-bottom:12px;box-shadow:0 1px 3px #0002}
 #admin h2{margin:0 0 8px;font-size:16px}
-.row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+details{border-top:1px solid #eee;padding:6px 0}
+summary{font-weight:600;padding:8px 0}
+.row{display:flex;gap:6px;margin:6px 0;flex-wrap:wrap}
 .row input,.row select{flex:1;min-width:90px;padding:10px;font-size:16px;border:1px solid #bbb;border-radius:8px}
 .row button,dialog button{padding:10px 14px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
 .pl{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #eee}
@@ -34,6 +37,7 @@ main{padding:10px;max-width:600px;margin:auto}
 .who{color:#444;margin-bottom:8px}
 .btn{width:100%;padding:14px;font-size:17px;border:2px solid #2e7d32;border-radius:10px;background:#fff;color:#2e7d32}
 .btn.on{background:#2e7d32;color:#fff}
+.btn:disabled{border-color:#999;color:#999;background:#eee}
 label.p{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:17px}
 label.p input{width:24px;height:24px}
 label.p.on{background:#e8f5e9}
@@ -50,12 +54,29 @@ dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:
 </header>
 <main>
 <div id='err' class='err' hidden></div>
-<div class='me'>Ich bin: <select id='me'></select></div>
+<form id='fc' class='box'><input id='code' placeholder='Dein Code' autocomplete='off' autocapitalize='characters'><button>Anmelden</button></form>
+<div id='mbar' class='box' hidden><span id='mname'></span><button id='mout' type='button'>Abmelden</button></div>
 <section id='admin' hidden>
 <h2>Admin</h2>
-<form id='fp' class='row'><input id='pn' placeholder='Neue Person'><button>+ Person</button></form>
-<form id='ft' class='row'><select id='td'></select><input id='tt' type='time' value='18:00'><input id='tn' placeholder='Notiz (optional)'><button>+ Training</button></form>
+<details open><summary>Training anlegen</summary>
+<form id='ft' class='row'><select id='td'></select><input id='tt' type='time' value='18:00'><select id='tty'></select><select id='tlo'></select><input id='tmax' type='number' min='1' value='12' placeholder='Max'><input id='tn' placeholder='Notiz (optional)'><button>+ Training</button></form>
+</details>
+<details><summary>Mitglieder &amp; Codes</summary>
+<form id='fp' class='row'><input id='pn' placeholder='Name'><input id='pc' placeholder='Code (mind. 8 Zeichen)' autocomplete='off'><button>+ Mitglied</button></form>
 <div id='plist'></div>
+</details>
+<details><summary>Trainingstypen</summary>
+<form id='fty' class='row'><input id='tyn' placeholder='z.B. Pilates'><button>+ Typ</button></form>
+<div id='tylist'></div>
+</details>
+<details><summary>Orte</summary>
+<form id='fo' class='row'><input id='lon' placeholder='z.B. Turnhalle'><button>+ Ort</button></form>
+<div id='lolist'></div>
+</details>
+<details><summary>Wochenvorlagen</summary>
+<form id='fv' class='row'><select id='vd'></select><input id='vt' type='time' value='18:00'><select id='vty'></select><select id='vlo'></select><input id='vmax' type='number' min='1' value='12' placeholder='Max'><button>+ Vorlage</button></form>
+<div id='vlist'></div>
+</details>
 </section>
 <div id='days'></div>
 </main>
@@ -70,35 +91,87 @@ dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:
 </dialog>
 <script type='module'>
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-import {getFirestore,collection,doc,query,where,orderBy,onSnapshot,addDoc,setDoc,deleteDoc,getDocs,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import {getFirestore,collection,doc,query,where,orderBy,limit,onSnapshot,addDoc,setDoc,updateDoc,deleteDoc,getDoc,getDocs,runTransaction,writeBatch,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInAnonymously,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 const cfg={apiKey:'AIzaSyAmaVTns_UeAJs2iAp-EgJ-wp0nQJSNM4E',authDomain:'oz-training.firebaseapp.com',projectId:'oz-training',storageBucket:'oz-training.firebasestorage.app',messagingSenderId:'171662092227',appId:'1:171662092227:web:cca56365d6348527d23f76'};
 const ADMIN_UID='sbmdtQ4EObXPvRKpiqbgtdkJ5Dp2';
 const DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 const app=initializeApp(cfg),db=getFirestore(app),auth=getAuth(app);
 const $=id=>document.getElementById(id);
-let people=[],trainings=[],att={},unsubA={},unsubT=null,admin=false,off=0;
-let me=localStorage.getItem('me')||'';
+let types=[],locs=[],members=[],templates=[],trainings=[],att={},unsubA={},unsubT=null,unsubM=null,unsubV=null;
+let admin=false,member=null,user=null,off=0;
 const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const normCode=s=>(s||'').toUpperCase().replace(/[^A-Z0-9-]/g,'');
+const tName=id=>(types.find(x=>x.id===id)||{}).name||'';
+const lName=id=>(locs.find(x=>x.id===id)||{}).name||'';
 function monday(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)+off*7);return d}
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
 function showErr(e){const b=$('err');b.textContent='Fehler: '+(e.code||e.message);b.hidden=false;setTimeout(()=>{b.hidden=true},6000)}
-function toggle(tid,pid,on){const r=doc(db,'trainings',tid,'att',pid);(on?setDoc(r,{at:serverTimestamp()}):deleteDoc(r)).catch(showErr)}
+async function setBooking(t,mid,on,force){
+ await runTransaction(db,async tx=>{
+  const tr=doc(db,'trainings',t.id),ar=doc(db,'trainings',t.id,'att',mid);
+  const ts=await tx.get(tr);if(!ts.exists())throw new Error('Training existiert nicht mehr');
+  const a=await tx.get(ar),b=ts.data().booked||0,mx=ts.data().max??12;
+  if(on&&!a.exists()){if(b>=mx&&!force)throw new Error('belegt');tx.set(ar,{at:serverTimestamp()});tx.update(tr,{booked:b+1})}
+  if(!on&&a.exists()){tx.delete(ar);tx.update(tr,{booked:Math.max(0,b-1)})}
+ });
+}
+function book(t,mid,on,force){setBooking(t,mid,on,force).catch(e=>showErr(e.message==='belegt'?{message:'Training ist belegt'}:e))}
 async function delTraining(t){const s=await getDocs(collection(db,'trainings',t.id,'att'));await Promise.all(s.docs.map(d=>deleteDoc(d.ref)));await deleteDoc(doc(db,'trainings',t.id))}
-function fillMe(){
- const s=$('me');s.innerHTML='';
- s.append(new Option('– Name wählen –',''));
- people.forEach(p=>s.append(new Option(p.name,p.id)));
- if(!people.find(p=>p.id===me))me='';
- s.value=me;
+function setMax(t){const v=parseInt(prompt('Max. Teilnehmer',t.max??12),10);if(!(v>=1))return;if(v<(t.booked||0)){alert('Weniger als die aktuellen Buchungen ('+(t.booked||0)+') ist nicht möglich');return}updateDoc(doc(db,'trainings',t.id),{max:v}).catch(showErr)}
+function fillSel(id,items){const s=$(id),v=s.value;s.innerHTML='';items.forEach(x=>s.append(new Option(x.name,x.id)));if(items.find(x=>x.id===v))s.value=v}
+function simpleList(boxId,coll,items,field){
+ const box=$(boxId);box.innerHTML='';
+ items.forEach(x=>{
+  const r=el('div','pl'),b=el('span','');r.append(el('span','',x.name));
+  const e=el('button','x','✎');e.onclick=()=>{const v=prompt('Neuer Name',x.name);if(v&&v.trim())updateDoc(doc(db,coll,x.id),{name:v.trim()}).catch(showErr)};
+  const d=el('button','x','✕');d.onclick=async()=>{
+   try{
+    const u1=await getDocs(query(collection(db,'trainings'),where(field,'==',x.id),limit(1)));
+    const u2=await getDocs(query(collection(db,'templates'),where(field,'==',x.id),limit(1)));
+    if(!u1.empty||!u2.empty){alert('Wird noch verwendet und kann nicht gelöscht werden.');return}
+    if(confirm(x.name+' löschen?'))await deleteDoc(doc(db,coll,x.id));
+   }catch(err){showErr(err)}};
+  b.append(e,d);r.append(b);box.append(r)});
+}
+function fillRefs(){
+ ['tty','vty'].forEach(i=>fillSel(i,types));['tlo','vlo'].forEach(i=>fillSel(i,locs));
+ simpleList('tylist','types',types,'typeId');simpleList('lolist','locations',locs,'locationId');
+ fillVlist();render();
 }
 function fillPlist(){
  const box=$('plist');box.innerHTML='';
- people.forEach(p=>{
-  const r=el('div','pl');r.append(el('span','',p.name));
-  const x=el('button','x','✕');
-  x.onclick=()=>{if(confirm(p.name+' löschen?'))deleteDoc(doc(db,'people',p.id)).catch(showErr)};
-  r.append(x);box.append(r)});
+ members.forEach(m=>{
+  const r=el('div','pl'),b=el('span','');r.append(el('span','',m.name+'  ['+m.code+']'));
+  const e=el('button','x','✎');e.onclick=()=>editMember(m).catch(showErr);
+  const d=el('button','x','✕');d.onclick=()=>delMember(m).catch(showErr);
+  b.append(e,d);r.append(b);box.append(r)});
+}
+function fillVlist(){
+ const box=$('vlist');box.innerHTML='';
+ templates.slice().sort((a,b)=>a.weekday-b.weekday||(a.time||'').localeCompare(b.time||'')).forEach(v=>{
+  const r=el('div','pl');r.append(el('span','',DAYS[v.weekday]+' '+v.time+' · '+(tName(v.typeId)||'–')+' · '+(lName(v.locationId)||'–')+' · max '+v.max));
+  const d=el('button','x','✕');d.onclick=()=>{if(confirm('Vorlage löschen?'))deleteDoc(doc(db,'templates',v.id)).catch(showErr)};
+  r.append(d);box.append(r)});
+}
+async function editMember(m){
+ const n=prompt('Name',m.name);if(!n||!n.trim())return;
+ const c=normCode(prompt('Code (mind. 8 Zeichen)',m.code));
+ if(c.length<8){alert('Code zu kurz');return}
+ if(c!==m.code&&(await getDoc(doc(db,'codes',c))).exists()){alert('Code schon vergeben');return}
+ const b=writeBatch(db);
+ if(c!==m.code)b.delete(doc(db,'codes',m.code));
+ b.set(doc(db,'codes',c),{memberId:m.id,name:n.trim()});
+ b.update(doc(db,'members',m.id),{name:n.trim(),code:c});
+ await b.commit();
+}
+async function delMember(m){
+ if(!confirm(m.name+' löschen? Buchungen ab heute werden entfernt.'))return;
+ const ts=await getDocs(query(collection(db,'trainings'),where('date','>=',fmt(new Date()))));
+ for(const t of ts.docs){
+  const ar=doc(db,'trainings',t.id,'att',m.id),a=await getDoc(ar);
+  if(a.exists()){const b=writeBatch(db);b.delete(ar);b.update(t.ref,{booked:Math.max(0,(t.data().booked||0)-1)});await b.commit()}}
+ const b=writeBatch(db);b.delete(doc(db,'codes',m.code));b.delete(doc(db,'members',m.id));await b.commit();
 }
 function fillDays(){
  const m=monday(),s=$('td');s.innerHTML='';
@@ -116,27 +189,60 @@ function render(){
   const trs=trainings.filter(t=>t.date===k).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
   if(!trs.length)box.append(el('div','empty','Kein Training'));
   trs.forEach(t=>{
-   const set=att[t.id]||new Set();
-   const going=people.filter(p=>set.has(p.id));
+   const booked=t.booked||0,mx=t.max??12,free=mx-booked;
    const tr=el('div','tr'),h=el('div','th');
-   h.append(el('b','',(t.time||'')+(t.note?'  '+t.note:'')),el('span','cnt',going.length+' dabei'));
-   if(admin){const x=el('button','x','✕');x.onclick=()=>{if(confirm('Training löschen?'))delTraining(t).catch(showErr)};h.append(x)}
-   tr.append(h);
+   h.append(el('b','',(t.time||'')+' · '+(tName(t.typeId)||'–')+' · '+(lName(t.locationId)||'–')));
+   h.append(el('span','cnt',admin?booked+' / '+mx:(free>0?free+' frei':'belegt')));
    if(admin){
-    people.forEach(p=>{
+    const ed=el('button','x','✎');ed.onclick=()=>setMax(t);
+    const x=el('button','x','✕');x.onclick=()=>{if(confirm('Training löschen?'))delTraining(t).catch(showErr)};
+    h.append(ed,x)}
+   tr.append(h);
+   if(t.note)tr.append(el('div','who',t.note));
+   if(admin){
+    const set=att[t.id] instanceof Set?att[t.id]:new Set();
+    if(!members.length)tr.append(el('div','empty','Noch keine Mitglieder'));
+    members.forEach(p=>{
      const on=set.has(p.id),l=el('label','p'+(on?' on':''));
      const cb=document.createElement('input');cb.type='checkbox';cb.checked=on;
-     cb.onchange=()=>toggle(t.id,p.id,cb.checked);
+     cb.onchange=()=>{const force=cb.checked&&booked>=mx;if(force&&!confirm('Training ist belegt. Trotzdem hinzufügen?')){cb.checked=false;return}book(t,p.id,cb.checked,force)};
      l.append(cb,el('span','',p.name));tr.append(l)});
-   }else{
-    tr.append(el('div','who',going.length?going.map(p=>p.name).join(', '):'Noch niemand'));
-    if(people.find(p=>p.id===me)){
-     const on=set.has(me),b=el('button','btn'+(on?' on':''),on?'✓ Ich komme (antippen zum Abmelden)':'Ich komme');
-     b.onclick=()=>toggle(t.id,me,!on);tr.append(b)}
-    else tr.append(el('div','empty','Oben deinen Namen wählen'));
-   }
+   }else if(member){
+    const mine=att[t.id]===true,full=free<=0;
+    const b=el('button','btn'+(mine?' on':''),mine?'✓ Gebucht – antippen zum Stornieren':(full?'belegt':'Buchen'));
+    b.disabled=full&&!mine;b.onclick=()=>book(t,member.id,!mine,false);tr.append(b);
+   }else tr.append(el('div','empty','Zum Buchen oben mit deinem Code anmelden'));
    box.append(tr)});
   root.append(box)}
+}
+function attach(t){
+ if(unsubA[t.id])return;
+ if(admin)unsubA[t.id]=onSnapshot(collection(db,'trainings',t.id,'att'),s=>{att[t.id]=new Set(s.docs.map(d=>d.id));render()},showErr);
+ else if(member)unsubA[t.id]=onSnapshot(doc(db,'trainings',t.id,'att',member.id),s=>{att[t.id]=s.exists();render()},showErr);
+}
+function startAdmin(){
+ if(!unsubM)unsubM=onSnapshot(query(collection(db,'members'),orderBy('name')),s=>{members=s.docs.map(d=>({id:d.id,...d.data()}));fillPlist();render()},showErr);
+ if(!unsubV)unsubV=onSnapshot(collection(db,'templates'),s=>{templates=s.docs.map(d=>({id:d.id,...d.data()}));fillVlist()},showErr);
+}
+function stopAdmin(){if(unsubM){unsubM();unsubM=null}if(unsubV){unsubV();unsubV=null}members=[];templates=[];fillPlist();fillVlist()}
+function updateUI(){
+ $('admin').hidden=!admin;
+ $('loginBtn').textContent=admin?'Abmelden':'Admin';
+ $('fc').hidden=admin||!!member;
+ $('mbar').hidden=admin||!member;
+ $('mname').textContent=member?'Angemeldet: '+member.name:'';
+}
+function setRole(){
+ Object.values(unsubA).forEach(f=>f());unsubA={};att={};
+ if(admin)startAdmin();else stopAdmin();
+ updateUI();trainings.forEach(attach);render();
+}
+async function claim(code){
+ const c=await getDoc(doc(db,'codes',code));
+ if(!c.exists())return false;
+ await setDoc(doc(db,'claims',user.uid),{code});
+ member={id:c.data().memberId,name:c.data().name};
+ localStorage.setItem('code',code);return true;
 }
 function watchWeek(){
  const m=monday(),e=new Date(m);e.setDate(e.getDate()+6);
@@ -145,20 +251,62 @@ function watchWeek(){
   trainings=s.docs.map(d=>({id:d.id,...d.data()}));
   const ids=new Set(trainings.map(t=>t.id));
   Object.keys(unsubA).forEach(id=>{if(!ids.has(id)){unsubA[id]();delete unsubA[id];delete att[id]}});
-  trainings.forEach(t=>{if(!unsubA[t.id])unsubA[t.id]=onSnapshot(collection(db,'trainings',t.id,'att'),a=>{att[t.id]=new Set(a.docs.map(x=>x.id));render()},showErr)});
+  trainings.forEach(attach);
   render()},showErr);
  fillDays();render();
 }
-onSnapshot(query(collection(db,'people'),orderBy('name')),s=>{people=s.docs.map(d=>({id:d.id,name:d.data().name}));fillMe();fillPlist();render()},showErr);
-$('me').onchange=e=>{me=e.target.value;localStorage.setItem('me',me);render()};
+onSnapshot(query(collection(db,'types'),orderBy('name')),s=>{types=s.docs.map(d=>({id:d.id,...d.data()}));fillRefs()},showErr);
+onSnapshot(query(collection(db,'locations'),orderBy('name')),s=>{locs=s.docs.map(d=>({id:d.id,...d.data()}));fillRefs()},showErr);
+DAYS.forEach((n,i)=>$('vd').append(new Option(n,String(i))));
 $('prev').onclick=()=>{off--;watchWeek()};
 $('next').onclick=()=>{off++;watchWeek()};
-$('fp').onsubmit=e=>{e.preventDefault();const v=$('pn').value.trim();if(!v)return;addDoc(collection(db,'people'),{name:v}).then(()=>{$('pn').value=''}).catch(showErr)};
-$('ft').onsubmit=e=>{e.preventDefault();addDoc(collection(db,'trainings'),{date:$('td').value,time:$('tt').value,note:$('tn').value.trim()}).then(()=>{$('tn').value=''}).catch(showErr)};
+$('fty').onsubmit=e=>{e.preventDefault();const v=$('tyn').value.trim();if(!v)return;addDoc(collection(db,'types'),{name:v}).then(()=>{$('tyn').value=''}).catch(showErr)};
+$('fo').onsubmit=e=>{e.preventDefault();const v=$('lon').value.trim();if(!v)return;addDoc(collection(db,'locations'),{name:v}).then(()=>{$('lon').value=''}).catch(showErr)};
+$('fp').onsubmit=async e=>{
+ e.preventDefault();
+ const n=$('pn').value.trim(),c=normCode($('pc').value);
+ if(!n)return;
+ if(c.length<8){alert('Code: mindestens 8 Zeichen (Buchstaben, Zahlen, Bindestrich)');return}
+ try{
+  if((await getDoc(doc(db,'codes',c))).exists()){alert('Code schon vergeben');return}
+  const ref=doc(collection(db,'members')),b=writeBatch(db);
+  b.set(ref,{name:n,code:c});b.set(doc(db,'codes',c),{memberId:ref.id,name:n});
+  await b.commit();$('pn').value='';$('pc').value='';
+ }catch(err){showErr(err)}
+};
+$('ft').onsubmit=e=>{
+ e.preventDefault();
+ if(!$('tty').value||!$('tlo').value){alert('Zuerst Typ und Ort anlegen');return}
+ const mx=parseInt($('tmax').value,10);if(!(mx>=1)){alert('Max. Teilnehmer ungültig');return}
+ addDoc(collection(db,'trainings'),{date:$('td').value,time:$('tt').value,note:$('tn').value.trim(),typeId:$('tty').value,locationId:$('tlo').value,max:mx,booked:0,templateId:null}).then(()=>{$('tn').value=''}).catch(showErr);
+};
+$('fv').onsubmit=e=>{
+ e.preventDefault();
+ if(!$('vty').value||!$('vlo').value){alert('Zuerst Typ und Ort anlegen');return}
+ const mx=parseInt($('vmax').value,10);if(!(mx>=1)){alert('Max. Teilnehmer ungültig');return}
+ addDoc(collection(db,'templates'),{weekday:parseInt($('vd').value,10),time:$('vt').value,typeId:$('vty').value,locationId:$('vlo').value,max:mx,active:true}).catch(showErr);
+};
+$('fc').onsubmit=async e=>{
+ e.preventDefault();
+ const c=normCode($('code').value);if(!c)return;
+ try{
+  if(!user)throw new Error('Noch nicht verbunden, bitte nochmals versuchen');
+  if(!(await claim(c))){alert('Code ungültig');return}
+  $('code').value='';setRole();
+ }catch(err){showErr(err)}
+};
+$('mout').onclick=()=>{if(user)deleteDoc(doc(db,'claims',user.uid)).catch(()=>{});localStorage.removeItem('code');member=null;setRole()};
 $('loginBtn').onclick=()=>{if(admin)signOut(auth);else{$('lerr').hidden=true;$('dlg').showModal()}};
 $('cx').onclick=()=>$('dlg').close();
 $('fl').onsubmit=e=>{e.preventDefault();signInWithEmailAndPassword(auth,$('em').value.trim(),$('pw').value).then(()=>{$('pw').value='';$('dlg').close()}).catch(()=>{$('lerr').textContent='Login fehlgeschlagen';$('lerr').hidden=false})};
-onAuthStateChanged(auth,u=>{admin=!!u&&u.uid===ADMIN_UID;$('admin').hidden=!admin;$('loginBtn').textContent=admin?'Abmelden':'Admin';render()});
+onAuthStateChanged(auth,async u=>{
+ user=u;member=null;
+ if(!u){admin=false;setRole();signInAnonymously(auth).catch(showErr);return}
+ admin=!u.isAnonymous&&u.uid===ADMIN_UID;
+ const saved=localStorage.getItem('code');
+ if(!admin&&saved){try{if(!(await claim(saved)))localStorage.removeItem('code')}catch(err){showErr(err)}}
+ setRole();
+});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 watchWeek();
 </script>

@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == 'sbmdtQ4EObXPvRKpiqbgtdkJ5Dp2';
+    }
+    function myCode() {
+      return get(/databases/$(database)/documents/claims/$(request.auth.uid)).data.code;
+    }
+    function isMember() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/claims/$(request.auth.uid))
+        && exists(/databases/$(database)/documents/codes/$(myCode()));
+    }
+    function myMemberId() {
+      return get(/databases/$(database)/documents/codes/$(myCode())).data.memberId;
+    }
+    function bookingChange(t) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let attPath = /databases/$(database)/documents/trainings/$(t)/att/$(myMemberId());
+      return isMember()
+        && after.diff(before).affectedKeys().hasOnly(['booked'])
+        && after.booked >= 0
+        && after.booked <= after.max
+        && ((after.booked == before.booked + 1 && !exists(attPath) && existsAfter(attPath))
+         || (after.booked == before.booked - 1 && exists(attPath) && !existsAfter(attPath)));
+    }
+
+    match /types/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /locations/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /templates/{id} {
+      allow read, write: if isAdmin();
+    }
+    match /members/{id} {
+      allow read, write: if isAdmin();
+    }
+    match /codes/{code} {
+      allow get: if request.auth != null;
+      allow list, write: if isAdmin();
+    }
+    match /claims/{uid} {
+      allow get, delete: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow list: if isAdmin();
+      allow create, update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['code'])
+        && request.resource.data.code is string
+        && exists(/databases/$(database)/documents/codes/$(request.resource.data.code));
+    }
+    match /trainings/{t} {
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || bookingChange(t);
+
+      match /att/{p} {
+        allow list: if isAdmin();
+        allow get: if isAdmin() || (isMember() && myMemberId() == p);
+        allow create: if isAdmin() || (isMember() && myMemberId() == p
+          && request.resource.data.keys().hasOnly(['at'])
+          && getAfter(/databases/$(database)/documents/trainings/$(t)).data.booked
+             == get(/databases/$(database)/documents/trainings/$(t)).data.booked + 1);
+        allow update: if isAdmin();
+        allow delete: if isAdmin() || (isMember() && myMemberId() == p
+          && getAfter(/databases/$(database)/documents/trainings/$(t)).data.booked
+             == get(/databases/$(database)/documents/trainings/$(t)).data.booked - 1);
+      }
+    }
+  }
+}
