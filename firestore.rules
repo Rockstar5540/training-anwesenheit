@@ -24,7 +24,7 @@ service cloud.firestore {
         && after.diff(before).affectedKeys().hasOnly(['booked'])
         && after.booked >= 0
         && after.booked <= after.max
-        && ((after.booked == before.booked + 1 && !exists(attPath) && existsAfter(attPath))
+        && ((after.booked == before.booked + 1 && before.get('status', 'active') != 'cancelled' && !exists(attPath) && existsAfter(attPath))
          || (after.booked == before.booked - 1 && exists(attPath) && !existsAfter(attPath)));
     }
 
@@ -37,6 +37,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     match /templates/{id} {
+      allow read, write: if isAdmin();
+    }
+    match /weeks/{w} {
+      allow read, write: if isAdmin();
+    }
+    match /settings/{s} {
       allow read, write: if isAdmin();
     }
     match /members/{id} {

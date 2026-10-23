@@ -30,39 +30,61 @@ main{padding:10px;max-width:600px;margin:auto}
 .small{font-size:13px;color:#2e7d32}
 .bigname{font-size:22px;font-weight:700}
 #admin{background:#fff;border-radius:10px;padding:10px;margin-bottom:12px;box-shadow:0 1px 3px #0002}
-#admin h2{margin:0 0 8px;font-size:16px}
-details{border-top:1px solid #eee;padding:6px 0}
-summary{font-weight:600;padding:8px 0}
-.row{display:flex;gap:6px;margin:6px 0;flex-wrap:wrap}
-.row input,.row select{flex:1;min-width:90px;padding:10px;font-size:16px;border:1px solid #bbb;border-radius:8px}
+#admin h2{margin:0 0 8px;font-size:18px}
+#admin details{border:0;margin-bottom:8px;padding:0}
+#admin summary{background:#e8f5e9;border-radius:10px;padding:14px;font-size:17px;font-weight:700;cursor:pointer}
+#admin details[open] summary{background:#2e7d32;color:#fff}
+.card{background:#f1f5f1;border-radius:10px;padding:12px;margin:10px 0}
+.bigtxt{font-size:18px;font-weight:700}
+.hint{color:#555;margin:6px 0}
+.bigrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.big{flex:1;min-height:50px;padding:14px 18px;font-size:17px;border:0;border-radius:10px;background:#2e7d32;color:#fff}
+.big.sec{background:#777}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.grid h3,.grid .bigrow{grid-column:1/-1;margin:0}
+.fld{display:flex;flex-direction:column;font-size:13px;color:#555;gap:4px}
+.fld select,.fld input{padding:12px;font-size:16px;border:1px solid #bbb;border-radius:8px;color:#111;width:100%;background:#fff}
+.row{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}
+.row input,.row select{flex:1;min-width:90px;padding:12px;font-size:16px;border:1px solid #bbb;border-radius:8px}
 .mono{font-family:monospace;letter-spacing:1px}
-.row button,dialog button{padding:10px 14px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
+.row button,dialog button{min-height:46px;padding:10px 14px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
 .row button.sec{background:#777}
 .pl{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #eee}
+.vitem{padding:10px 0;border-top:1px solid #eee}
+.vt1{font-weight:700;font-size:17px}
+.vt2{color:#444;margin:2px 0 6px}
 .mrow{padding:10px 0;border-top:1px solid #eee}
 .mname{font-weight:700;font-size:17px}
 .mcode{font-family:monospace;font-size:22px;letter-spacing:2px;background:#f1f5f1;border-radius:6px;padding:4px 10px;display:inline-block;margin:6px 0}
 .macts{display:flex;gap:6px;flex-wrap:wrap}
-.macts button{padding:9px 12px;font-size:14px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
+.macts button{min-height:44px;padding:9px 12px;font-size:14px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
 .macts button.sec{background:#777}
 .macts button.danger{background:#c62828}
 .day{background:#fff;border-radius:10px;margin-bottom:10px;box-shadow:0 1px 3px #0002;overflow:hidden}
 .day.today{outline:3px solid #2e7d32}
 .dh{padding:10px 12px;background:#e3efe3;font-weight:600}
 .tr{padding:10px 12px;border-top:1px solid #eee}
-.th{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.tr.off{background:#f5f5f5}
+.th{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .cnt{color:#2e7d32;font-weight:600;margin-left:auto}
+.badge{font-size:12px;border-radius:10px;padding:3px 9px;color:#fff;background:#c62828}
+.badge.mv{background:#f9a825;color:#000}
 .who{color:#444;margin-bottom:8px}
+.tacts{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 2px}
+.tacts button{flex:1;min-height:46px;font-size:15px;border:0;border-radius:8px;background:#777;color:#fff;padding:8px 10px}
+.tacts button.warn{background:#ef6c00}
+.tacts button.danger{background:#c62828}
+.tacts button.ok{background:#2e7d32}
 .btn{width:100%;padding:14px;font-size:17px;border:2px solid #2e7d32;border-radius:10px;background:#fff;color:#2e7d32}
 .btn.on{background:#2e7d32;color:#fff}
 .btn:disabled{border-color:#999;color:#999;background:#eee}
 label.p{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:17px}
 label.p input{width:24px;height:24px}
 label.p.on{background:#e8f5e9}
-.x{background:none;border:0;color:#c62828;font-size:20px;padding:4px 8px}
 .empty{padding:12px;color:#777}
-dialog{border:0;border-radius:12px;padding:16px;width:90%;max-width:360px}
+dialog{border:0;border-radius:12px;padding:16px;width:90%;max-width:380px}
 dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:8px;border:1px solid #bbb;border-radius:8px}
+dialog .fld{margin-bottom:10px}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#222;color:#fff;padding:12px 20px;border-radius:24px;z-index:10;max-width:90%;box-shadow:0 2px 8px #0005;opacity:0;pointer-events:none;transition:opacity .2s;text-align:center}
 #toast.show{opacity:1}
 #toast.bad{background:#c62828}
@@ -78,8 +100,33 @@ dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:
 <div id='mbar' class='box mbar' hidden><div><div class='small'>Angemeldet als</div><div id='mname' class='bigname'></div></div><button id='mout' type='button'>Abmelden</button></div>
 <section id='admin' hidden>
 <h2>Admin</h2>
-<details open><summary>Training anlegen</summary>
-<form id='ft' class='row'><select id='td'></select><input id='tt' type='time' value='18:00'><select id='tty'></select><select id='tlo'></select><input id='tmax' type='number' min='1' value='12' placeholder='Max'><input id='tn' placeholder='Notiz (optional)'><button>+ Training</button></form>
+<details open><summary>Wochenplan (Vorlage)</summary>
+<div class='card'>
+<div id='autoState' class='bigtxt'></div>
+<div id='autoInfo' class='hint'></div>
+<div class='bigrow'><button type='button' id='autoBtn' class='big'>Automatik einschalten</button><button type='button' id='autoNow' class='big sec'>Jetzt prüfen und erzeugen</button></div>
+</div>
+<div id='vlist'></div>
+<form id='fv' class='grid card'>
+<h3 id='vtitle'>Neuen Eintrag hinzufügen</h3>
+<label class='fld'>Wochentag<select id='vd'></select></label>
+<label class='fld'>Uhrzeit<select id='vt'></select></label>
+<label class='fld'>Typ<select id='vty'></select></label>
+<label class='fld'>Ort<select id='vlo'></select></label>
+<label class='fld'>Max. Teilnehmer<input id='vmax' type='number' min='1' value='12'></label>
+<div class='bigrow'><button id='vsave' class='big'>+ Eintrag hinzufügen</button><button type='button' id='vcancel' class='big sec' hidden>Abbrechen</button></div>
+</form>
+</details>
+<details><summary>Einmaliges Training anlegen</summary>
+<form id='ft' class='grid card'>
+<label class='fld'>Datum<input id='td' type='date'></label>
+<label class='fld'>Uhrzeit<select id='tt'></select></label>
+<label class='fld'>Typ<select id='tty'></select></label>
+<label class='fld'>Ort<select id='tlo'></select></label>
+<label class='fld'>Max. Teilnehmer<input id='tmax' type='number' min='1' value='12'></label>
+<label class='fld'>Notiz (optional)<input id='tn'></label>
+<div class='bigrow'><button class='big'>+ Training anlegen</button></div>
+</form>
 </details>
 <details><summary>Mitglieder &amp; Codes</summary>
 <form id='fp' class='row'><input id='pn' placeholder='Name'><input id='pc' class='mono' placeholder='Code (mind. 8 Zeichen)' autocomplete='off'><button type='button' id='pg' class='sec'>Neu erzeugen</button><button>+ Mitglied</button></form>
@@ -92,10 +139,6 @@ dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:
 <details><summary>Orte</summary>
 <form id='fo' class='row'><input id='lon' placeholder='z.B. Turnhalle'><button>+ Ort</button></form>
 <div id='lolist'></div>
-</details>
-<details><summary>Wochenvorlagen</summary>
-<form id='fv' class='row'><select id='vd'></select><input id='vt' type='time' value='18:00'><select id='vty'></select><select id='vlo'></select><input id='vmax' type='number' min='1' value='12' placeholder='Max'><button>+ Vorlage</button></form>
-<div id='vlist'></div>
 </details>
 </section>
 <div id='days'></div>
@@ -110,6 +153,15 @@ dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:
 <button>Anmelden</button> <button type='button' id='cx' style='background:#777'>Abbrechen</button>
 </form>
 </dialog>
+<dialog id='de'>
+<form id='fe'>
+<h3 id='etitle'></h3>
+<label class='fld'>Uhrzeit<select id='etime'></select></label>
+<label class='fld'>Ort<select id='eloc'></select></label>
+<label class='fld'>Max. Teilnehmer<input id='emax' type='number' min='1'></label>
+<div class='bigrow'><button class='big'>Speichern</button><button type='button' id='ecx' class='big sec'>Abbrechen</button></div>
+</form>
+</dialog>
 <script type='module'>
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {getFirestore,collection,doc,query,where,orderBy,limit,onSnapshot,addDoc,setDoc,updateDoc,deleteDoc,getDoc,getDocs,runTransaction,writeBatch,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
@@ -118,19 +170,29 @@ const cfg={apiKey:'AIzaSyAmaVTns_UeAJs2iAp-EgJ-wp0nQJSNM4E',authDomain:'oz-train
 const ADMIN_UID='sbmdtQ4EObXPvRKpiqbgtdkJ5Dp2';
 const DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 const ALPHA='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const LOOKAHEAD=2;
 const app=initializeApp(cfg),db=getFirestore(app),auth=getAuth(app);
 const $=id=>document.getElementById(id);
-let types=[],locs=[],members=[],templates=[],trainings=[],att={},unsubA={},unsubT=null,unsubM=null,unsubV=null,tt=null;
-let admin=false,member=null,user=null,off=0;
+let types=[],locs=[],members=[],templates=[],trainings=[],att={},unsubA={},unsubT=null,unsubM=null,unsubV=null,unsubS=null,tt=null;
+let admin=false,member=null,user=null,off=0,settings={enabled:false},autoRan=false,genBusy=false,editV=null,editT=null;
 const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const fmtDe=k=>k.slice(8,10)+'.'+k.slice(5,7)+'.'+k.slice(0,4);
 const normCode=s=>(s||'').toUpperCase().replace(/[^A-Z0-9-]/g,'');
 const fmtCode=c=>c.length===8?c.slice(0,4)+' '+c.slice(4):c;
 function genCode(){const a=new Uint32Array(8);crypto.getRandomValues(a);let s='';a.forEach(v=>{s+=ALPHA[v%ALPHA.length]});return s}
 async function newCode(){for(let i=0;i<8;i++){const c=genCode();if(!(await getDoc(doc(db,'codes',c))).exists())return c}throw new Error('Kein freier Code gefunden')}
 const tName=id=>(types.find(x=>x.id===id)||{}).name||'';
 const lName=id=>(locs.find(x=>x.id===id)||{}).name||'';
-function monday(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)+off*7);return d}
+function mondayOf(o){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)+o*7);return d}
+function monday(){return mondayOf(off)}
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function mkBtn(parent,text,cls,fn){const b=el('button',cls,text);b.type='button';b.onclick=()=>fn(b);parent.append(b);return b}
+function timeOpts(sel,val){
+ sel.innerHTML='';
+ for(let h=5;h<=23;h++)for(let m=0;m<60;m+=15){const v=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');sel.append(new Option(v+' Uhr',v))}
+ if(val&&![...sel.options].some(o=>o.value===val))sel.append(new Option(val+' Uhr',val));
+ sel.value=val||'18:00';
+}
 function toast(msg,bad){const t=$('toast');t.textContent=msg;t.className='show'+(bad?' bad':'');clearTimeout(tt);tt=setTimeout(()=>{t.className=''},bad?4500:2200)}
 function showErr(e){toast('Fehler: '+(e.code||e.message),true)}
 function run(btn,p,msg){
@@ -145,35 +207,48 @@ async function setBooking(t,mid,on,force){
   const tr=doc(db,'trainings',t.id),ar=doc(db,'trainings',t.id,'att',mid);
   const ts=await tx.get(tr);if(!ts.exists())throw new Error('Training existiert nicht mehr');
   const a=await tx.get(ar),b=ts.data().booked||0,mx=ts.data().max??12;
-  if(on&&!a.exists()){if(b>=mx&&!force)throw new Error('belegt');tx.set(ar,{at:serverTimestamp()});tx.update(tr,{booked:b+1})}
+  if(on&&!a.exists()){
+   if(ts.data().status==='cancelled')throw new Error('abgesagt');
+   if(b>=mx&&!force)throw new Error('belegt');
+   tx.set(ar,{at:serverTimestamp()});tx.update(tr,{booked:b+1})}
   if(!on&&a.exists()){tx.delete(ar);tx.update(tr,{booked:Math.max(0,b-1)})}
  });
 }
 function book(t,mid,on,force,btn){
  if(btn){btn.classList.add('busy');if(btn.tagName==='BUTTON')btn.textContent='…';else btn.disabled=true}
- return setBooking(t,mid,on,force).then(()=>toast(on?'Gebucht ✓':'Storniert ✓')).catch(e=>showErr(e.message==='belegt'?{message:'Training ist belegt'}:e)).finally(()=>render());
+ const map={belegt:'Training ist belegt',abgesagt:'Training ist abgesagt'};
+ return setBooking(t,mid,on,force).then(()=>toast(on?'Gebucht ✓':'Storniert ✓')).catch(e=>showErr(map[e.message]?{message:map[e.message]}:e)).finally(()=>render());
 }
 async function delTraining(t){const s=await getDocs(collection(db,'trainings',t.id,'att'));await Promise.all(s.docs.map(d=>deleteDoc(d.ref)));await deleteDoc(doc(db,'trainings',t.id))}
-function setMax(t){
- const v=parseInt(prompt('Max. Teilnehmer',t.max??12),10);if(!(v>=1))return;
- if(v<(t.booked||0)){toast('Weniger als die aktuellen Buchungen ('+(t.booked||0)+') ist nicht möglich',true);return}
- run(null,updateDoc(doc(db,'trainings',t.id),{max:v}),'Max. gespeichert ✓');
+function toggleCancel(t,b){
+ const n=t.booked||0,on=t.status!=='cancelled';
+ const q=on?'Training wirklich absagen?'+(n?' Achtung: '+n+' Buchung(en) sind betroffen. Die Mitglieder sehen «sabgesagt». Die Buchungen bleiben gespeichert.':' Die Mitglieder sehen «sabgesagt».'):'Training wieder aktivieren?';
+ if(!confirm(q))return;
+ run(b,updateDoc(doc(db,'trainings',t.id),{status:on?'cancelled':'active'}),on?'Training abgesagt ✓':'Training wieder aktiv ✓');
+}
+function removeTraining(t,b){
+ const n=t.booked||0;
+ if(!confirm('Training endgültig löschen?'+(n?' Achtung: '+n+' Buchung(en) werden ebenfalls gelöscht.':'')+' Das kann nicht rückgängig gemacht werden. Tipp: Zum Absagen nimm «Absagen».'))return;
+ run(b,delTraining(t),'Training gelöscht ✓');
+}
+function openEdit(t){
+ editT=t;timeOpts($('etime'),t.time);fillSel('eloc',locs);$('eloc').value=t.locationId;
+ $('emax').value=t.max??12;$('etitle').textContent=(tName(t.typeId)||'Training')+' am '+fmtDe(t.date);
+ $('de').showModal();
 }
 function fillSel(id,items){const s=$(id),v=s.value;s.innerHTML='';items.forEach(x=>s.append(new Option(x.name,x.id)));if(items.find(x=>x.id===v))s.value=v}
 function simpleList(boxId,coll,items,field){
  const box=$(boxId);box.innerHTML='';
  items.forEach(x=>{
   const r=el('div','pl'),b=el('span','');r.append(el('span','',x.name));
-  const e=el('button','x','✎');e.title='Umbenennen';
-  e.onclick=()=>{const v=prompt('Neuer Name',x.name);if(v&&v.trim())run(e,updateDoc(doc(db,coll,x.id),{name:v.trim()}),'Gespeichert ✓')};
-  const d=el('button','x','✕');d.title='Löschen';
-  d.onclick=()=>run(d,(async()=>{
+  mkBtn(b,'Umbenennen','sec',btn=>{const v=prompt('Neuer Name',x.name);if(v&&v.trim())run(btn,updateDoc(doc(db,coll,x.id),{name:v.trim()}),'Gespeichert ✓')});
+  mkBtn(b,'Löschen','danger',btn=>run(btn,(async()=>{
    const u1=await getDocs(query(collection(db,'trainings'),where(field,'==',x.id),limit(1)));
    const u2=await getDocs(query(collection(db,'templates'),where(field,'==',x.id),limit(1)));
    if(!u1.empty||!u2.empty)throw new Error('Wird noch verwendet und kann nicht gelöscht werden');
    if(confirm(x.name+' löschen?')){await deleteDoc(doc(db,coll,x.id));toast('Gelöscht ✓')}
-  })());
-  b.append(e,d);r.append(b);box.append(r)});
+  })()));
+  b.className='macts';r.append(b);box.append(r)});
 }
 function fillRefs(){
  ['tty','vty'].forEach(i=>fillSel(i,types));['tlo','vlo'].forEach(i=>fillSel(i,locs));
@@ -187,20 +262,89 @@ function fillPlist(){
   const r=el('div','mrow');
   r.append(el('div','mname',m.name),el('div','mcode',fmtCode(m.code)));
   const a=el('div','macts');
-  const mk=(t,cls,fn)=>{const b=el('button',cls,t);b.type='button';b.onclick=()=>fn(b);a.append(b)};
-  mk('Einladung teilen','',()=>shareInvite(m));
-  mk('Code kopieren','sec',()=>copyText(m.code,'Code kopiert ✓'));
-  mk('Neuer Code','sec',b=>run(b,regenCode(m)));
-  mk('Bearbeiten','sec',b=>run(b,editMember(m)));
-  mk('Löschen','danger',b=>run(b,delMember(m)));
+  mkBtn(a,'Einladung teilen','',()=>shareInvite(m));
+  mkBtn(a,'Code kopieren','sec',()=>copyText(m.code,'Code kopiert ✓'));
+  mkBtn(a,'Neuer Code','sec',b=>run(b,regenCode(m)));
+  mkBtn(a,'Bearbeiten','sec',b=>run(b,editMember(m)));
+  mkBtn(a,'Löschen','danger',b=>run(b,delMember(m)));
   r.append(a);box.append(r)});
+}
+function resetV(){
+ editV=null;$('vd').value='0';timeOpts($('vt'),'18:00');$('vmax').value='12';
+ $('vtitle').textContent='Neuen Eintrag hinzufügen';$('vsave').textContent='+ Eintrag hinzufügen';$('vcancel').hidden=true;
+}
+function editTemplate(v){
+ editV=v.id;$('vd').value=String(v.weekday);timeOpts($('vt'),v.time);$('vty').value=v.typeId;$('vlo').value=v.locationId;$('vmax').value=v.max;
+ $('vtitle').textContent='Eintrag bearbeiten';$('vsave').textContent='Änderung speichern';$('vcancel').hidden=false;
+ $('fv').scrollIntoView({behavior:'smooth'});
 }
 function fillVlist(){
  const box=$('vlist');box.innerHTML='';
+ if(!templates.length)box.append(el('div','empty','Noch keine Einträge im Wochenplan.'));
  templates.slice().sort((a,b)=>a.weekday-b.weekday||(a.time||'').localeCompare(b.time||'')).forEach(v=>{
-  const r=el('div','pl');r.append(el('span','',DAYS[v.weekday]+' '+v.time+' · '+(tName(v.typeId)||'–')+' · '+(lName(v.locationId)||'–')+' · max '+v.max));
-  const d=el('button','x','✕');d.onclick=()=>{if(confirm('Vorlage löschen?'))run(d,deleteDoc(doc(db,'templates',v.id)),'Vorlage gelöscht ✓')};
-  r.append(d);box.append(r)});
+  const r=el('div','vitem');
+  r.append(el('div','vt1',(DAYS[v.weekday]||'?')+' · '+v.time+' Uhr'),el('div','vt2',(tName(v.typeId)||'–')+' · '+(lName(v.locationId)||'–')+' · max. '+v.max+' Teilnehmer'));
+  const a=el('div','macts');
+  mkBtn(a,'Bearbeiten','sec',()=>editTemplate(v));
+  mkBtn(a,'Löschen','danger',b=>{if(confirm('Eintrag aus dem Wochenplan löschen? Bereits erzeugte Trainings und Buchungen bleiben unverändert.'))run(b,deleteDoc(doc(db,'templates',v.id)),'Eintrag gelöscht ✓')});
+  r.append(a);box.append(r)});
+}
+function fillAuto(){
+ const on=!!settings.enabled;
+ $('autoState').textContent='Automatik: '+(on?'EIN':'AUS');
+ $('autoBtn').textContent=on?'Automatik ausschalten':'Automatik einschalten';
+ $('autoBtn').className='big'+(on?' sec':'');
+ $('autoNow').hidden=!on;
+ let info='Die Automatik ist aus. Es werden keine Wochen automatisch erzeugt. Lege zuerst alle Einträge an und schalte sie dann ein.';
+ if(on){
+  const g=settings.generatedUntil;
+  if(g){const n=new Date(g+'T12:00:00');n.setDate(n.getDate()+7);
+   info='Wochen sind erzeugt bis zur Woche vom '+fmtDe(g)+'. Änderungen am Wochenplan gelten ab der Woche vom '+fmtDe(fmt(n))+'. Schon erzeugte Trainings und Buchungen bleiben unverändert.'}
+  else info='Es wurde noch keine Woche erzeugt. Tippe auf «Jetzt prüfen und erzeugen».'}
+ $('autoInfo').textContent=info;
+}
+async function ensureWeek(o){
+ const m=mondayOf(o),key=fmt(m),mk=doc(db,'weeks',key);
+ if((await getDoc(mk)).exists())return {state:'exists',n:0};
+ const tpls=(await getDocs(collection(db,'templates'))).docs.map(d=>({id:d.id,...d.data()})).filter(t=>t.active!==false);
+ if(!tpls.length)return {state:'none',n:0};
+ const e=new Date(m);e.setDate(m.getDate()+6);
+ const ex=(await getDocs(query(collection(db,'trainings'),where('date','>=',key),where('date','<=',fmt(e))))).docs.map(d=>d.data());
+ const today=fmt(new Date()),items=[];
+ tpls.forEach(t=>{
+  const d=new Date(m);d.setDate(m.getDate()+t.weekday);const date=fmt(d);
+  if(date<today)return;
+  if(ex.some(x=>x.date===date&&x.time===t.time&&x.typeId===t.typeId&&x.locationId===t.locationId))return;
+  items.push({id:'v_'+t.id+'_'+date,data:{date,time:t.time,note:'',typeId:t.typeId,locationId:t.locationId,max:t.max,booked:0,templateId:t.id,status:'active'}});
+ });
+ let n=0;
+ await runTransaction(db,async tx=>{
+  if((await tx.get(mk)).exists()){n=0;return}
+  tx.set(mk,{createdAt:serverTimestamp(),count:items.length});
+  items.forEach(i=>tx.set(doc(db,'trainings',i.id),i.data));
+  n=items.length;
+ });
+ return {state:'created',n};
+}
+async function ensureWeeks(manual){
+ if(genBusy)return;genBusy=true;
+ try{
+  let made=0,last=null;
+  for(let o=0;o<=LOOKAHEAD;o++){const r=await ensureWeek(o);if(r.state!=='none'){made+=r.n;last=fmt(mondayOf(o))}}
+  if(last&&(!settings.generatedUntil||last>settings.generatedUntil))await setDoc(doc(db,'settings','automation'),{generatedUntil:last},{merge:true});
+  if(made>0)toast(made+' Trainings aus dem Wochenplan erzeugt ✓');
+  else if(manual)toast(last?'Alles ist schon erzeugt ✓':'Keine aktiven Einträge im Wochenplan',!last);
+ }catch(e){showErr(e)}finally{genBusy=false}
+}
+function toggleAuto(b){
+ const on=!settings.enabled;
+ if(on&&!templates.some(t=>t.active!==false)){toast('Zuerst Einträge im Wochenplan anlegen',true);return}
+ if(!confirm(on?'Automatik einschalten? Die aktuelle Woche und die nächsten '+LOOKAHEAD+' Wochen werden jetzt aus dem Wochenplan erzeugt.':'Automatik ausschalten? Es werden keine neuen Wochen mehr erzeugt.'))return;
+ run(b,(async()=>{
+  await setDoc(doc(db,'settings','automation'),{enabled:on},{merge:true});
+  settings.enabled=on;
+  if(on){autoRan=true;await ensureWeeks(true)}
+ })(),on?'Automatik ist eingeschaltet ✓':'Automatik ist ausgeschaltet');
 }
 async function regenCode(m){
  if(!confirm('Neuen Code für '+m.name+' erzeugen? Der alte Code funktioniert danach nicht mehr.'))return;
@@ -228,10 +372,6 @@ async function delMember(m){
  const b=writeBatch(db);b.delete(doc(db,'codes',m.code));b.delete(doc(db,'members',m.id));await b.commit();
  toast('Mitglied gelöscht ✓');
 }
-function fillDays(){
- const m=monday(),s=$('td');s.innerHTML='';
- for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);s.append(new Option(DAYS[i]+' '+d.getDate()+'.'+(d.getMonth()+1)+'.',fmt(d)))}
-}
 function render(){
  const m=monday(),root=$('days');root.innerHTML='';
  const e=new Date(m);e.setDate(e.getDate()+6);
@@ -244,14 +384,11 @@ function render(){
   const trs=trainings.filter(t=>t.date===k).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
   if(!trs.length)box.append(el('div','empty','Kein Training'));
   trs.forEach(t=>{
-   const booked=t.booked||0,mx=t.max??12,free=mx-booked;
-   const tr=el('div','tr'),h=el('div','th');
+   const booked=t.booked||0,mx=t.max??12,free=mx-booked,canc=t.status==='cancelled';
+   const tr=el('div','tr'+(canc?' off':'')),h=el('div','th');
    h.append(el('b','',(t.time||'')+' · '+(tName(t.typeId)||'–')+' · '+(lName(t.locationId)||'–')));
-   h.append(el('span','cnt',admin?booked+' / '+mx:(free>0?free+' frei':'belegt')));
-   if(admin){
-    const ed=el('button','x','✎');ed.title='Max. Teilnehmer ändern';ed.onclick=()=>setMax(t);
-    const x=el('button','x','✕');x.title='Training löschen';x.onclick=()=>{if(confirm('Training löschen?'))run(x,delTraining(t),'Training gelöscht ✓')};
-    h.append(ed,x)}
+   if(canc)h.append(el('span','badge','abgesagt'));else if(t.moved)h.append(el('span','badge mv','geändert'));
+   h.append(el('span','cnt',admin?booked+' / '+mx:(canc?'':(free>0?free+' frei':'belegt'))));
    tr.append(h);
    if(t.note)tr.append(el('div','who',t.note));
    if(admin){
@@ -259,9 +396,16 @@ function render(){
     if(!members.length)tr.append(el('div','empty','Noch keine Mitglieder'));
     members.forEach(p=>{
      const on=set.has(p.id),l=el('label','p'+(on?' on':''));
-     const cb=document.createElement('input');cb.type='checkbox';cb.checked=on;
+     const cb=document.createElement('input');cb.type='checkbox';cb.checked=on;cb.disabled=canc;
      cb.onchange=()=>{const force=cb.checked&&booked>=mx;if(force&&!confirm('Training ist belegt. Trotzdem hinzufügen?')){cb.checked=false;return}book(t,p.id,cb.checked,force,cb)};
      l.append(cb,el('span','',p.name));tr.append(l)});
+    const ac=el('div','tacts');
+    mkBtn(ac,'Ändern','',()=>openEdit(t));
+    mkBtn(ac,canc?'Wieder aktivieren':'Absagen',canc?'ok':'warn',b=>toggleCancel(t,b));
+    mkBtn(ac,'Löschen','danger',b=>removeTraining(t,b));
+    tr.append(ac);
+   }else if(canc){
+    tr.append(el('div','empty','Dieses Training wurde abgesagt.'));
    }else if(member){
     const mine=att[t.id]===true,full=free<=0;
     const b=el('button','btn'+(mine?' on':''),mine?'✓ Gebucht – antippen zum Stornieren':(full?'belegt':'Buchen'));
@@ -278,9 +422,15 @@ function attach(t){
 function startAdmin(){
  if(!unsubM)unsubM=onSnapshot(query(collection(db,'members'),orderBy('name')),s=>{members=s.docs.map(d=>({id:d.id,...d.data()}));fillPlist();render()},showErr);
  if(!unsubV)unsubV=onSnapshot(collection(db,'templates'),s=>{templates=s.docs.map(d=>({id:d.id,...d.data()}));fillVlist()},showErr);
+ if(!unsubS)unsubS=onSnapshot(doc(db,'settings','automation'),s=>{
+  settings=s.exists()?{enabled:false,...s.data()}:{enabled:false};fillAuto();
+  if(settings.enabled&&!autoRan){autoRan=true;ensureWeeks(false)}},showErr);
  if(!$('pc').value)$('pc').value=genCode();
 }
-function stopAdmin(){if(unsubM){unsubM();unsubM=null}if(unsubV){unsubV();unsubV=null}members=[];templates=[];fillPlist();fillVlist()}
+function stopAdmin(){
+ if(unsubM){unsubM();unsubM=null}if(unsubV){unsubV();unsubV=null}if(unsubS){unsubS();unsubS=null}
+ members=[];templates=[];settings={enabled:false};autoRan=false;fillPlist();fillVlist();
+}
 function updateUI(){
  $('admin').hidden=!admin;
  $('loginBtn').textContent=admin?'Abmelden':'Admin';
@@ -311,14 +461,20 @@ function watchWeek(){
   Object.keys(unsubA).forEach(id=>{if(!ids.has(id)){unsubA[id]();delete unsubA[id];delete att[id]}});
   trainings.forEach(attach);
   render()},showErr);
- fillDays();render();
+ render();
 }
 onSnapshot(query(collection(db,'types'),orderBy('name')),s=>{types=s.docs.map(d=>({id:d.id,...d.data()}));fillRefs()},showErr);
 onSnapshot(query(collection(db,'locations'),orderBy('name')),s=>{locs=s.docs.map(d=>({id:d.id,...d.data()}));fillRefs()},showErr);
 DAYS.forEach((n,i)=>$('vd').append(new Option(n,String(i))));
+timeOpts($('tt'),'18:00');timeOpts($('vt'),'18:00');
+$('td').value=fmt(new Date());
 $('prev').onclick=()=>{off--;watchWeek()};
 $('next').onclick=()=>{off++;watchWeek()};
 $('pg').onclick=()=>{$('pc').value=genCode();toast('Neuer Code erzeugt')};
+$('autoBtn').onclick=()=>toggleAuto($('autoBtn'));
+$('autoNow').onclick=()=>run($('autoNow'),ensureWeeks(true));
+$('vcancel').onclick=()=>resetV();
+$('ecx').onclick=()=>$('de').close();
 $('fty').onsubmit=e=>{e.preventDefault();const v=$('tyn').value.trim();if(!v)return;run(e.submitter,addDoc(collection(db,'types'),{name:v}).then(()=>{$('tyn').value=''}),'Typ hinzugefügt ✓')};
 $('fo').onsubmit=e=>{e.preventDefault();const v=$('lon').value.trim();if(!v)return;run(e.submitter,addDoc(collection(db,'locations'),{name:v}).then(()=>{$('lon').value=''}),'Ort hinzugefügt ✓')};
 $('fp').onsubmit=e=>{
@@ -335,15 +491,32 @@ $('fp').onsubmit=e=>{
 };
 $('ft').onsubmit=e=>{
  e.preventDefault();
+ if(!$('td').value){toast('Datum fehlt',true);return}
  if(!$('tty').value||!$('tlo').value){toast('Zuerst Typ und Ort anlegen',true);return}
  const mx=parseInt($('tmax').value,10);if(!(mx>=1)){toast('Max. Teilnehmer ungültig',true);return}
- run(e.submitter,addDoc(collection(db,'trainings'),{date:$('td').value,time:$('tt').value,note:$('tn').value.trim(),typeId:$('tty').value,locationId:$('tlo').value,max:mx,booked:0,templateId:null}).then(()=>{$('tn').value=''}),'Training angelegt ✓');
+ run(e.submitter,addDoc(collection(db,'trainings'),{date:$('td').value,time:$('tt').value,note:$('tn').value.trim(),typeId:$('tty').value,locationId:$('tlo').value,max:mx,booked:0,templateId:null,status:'active'}).then(()=>{$('tn').value=''}),'Training angelegt ✓');
 };
 $('fv').onsubmit=e=>{
  e.preventDefault();
  if(!$('vty').value||!$('vlo').value){toast('Zuerst Typ und Ort anlegen',true);return}
  const mx=parseInt($('vmax').value,10);if(!(mx>=1)){toast('Max. Teilnehmer ungültig',true);return}
- run(e.submitter,addDoc(collection(db,'templates'),{weekday:parseInt($('vd').value,10),time:$('vt').value,typeId:$('vty').value,locationId:$('vlo').value,max:mx,active:true}),'Vorlage angelegt ✓');
+ const data={weekday:parseInt($('vd').value,10),time:$('vt').value,typeId:$('vty').value,locationId:$('vlo').value,max:mx,active:true};
+ const dup=templates.find(x=>x.id!==editV&&x.weekday===data.weekday&&x.time===data.time&&x.typeId===data.typeId&&x.locationId===data.locationId);
+ if(dup){toast('Diesen Eintrag gibt es schon',true);return}
+ const editing=!!editV;
+ const p=editing?updateDoc(doc(db,'templates',editV),data):addDoc(collection(db,'templates'),data);
+ run(e.submitter,p.then(()=>resetV()),editing?'Eintrag gespeichert ✓':'Eintrag hinzugefügt ✓');
+};
+$('fe').onsubmit=e=>{
+ e.preventDefault();
+ const t=editT;if(!t)return;
+ const n=t.booked||0,mx=parseInt($('emax').value,10),time=$('etime').value,loc=$('eloc').value;
+ if(!(mx>=1)){toast('Max. Teilnehmer ungültig',true);return}
+ if(mx<n){toast('Weniger als die aktuellen Buchungen ('+n+') ist nicht möglich',true);return}
+ const ch=time!==t.time||loc!==t.locationId;
+ if(ch&&n>0&&!confirm('Achtung: '+n+' Buchung(en) sind betroffen. Die Mitglieder sehen die neue Zeit bzw. den neuen Ort. Trotzdem speichern?'))return;
+ const upd={time,locationId:loc,max:mx};if(ch)upd.moved=true;
+ run(e.submitter,updateDoc(doc(db,'trainings',t.id),upd).then(()=>$('de').close()),'Training geändert ✓');
 };
 $('fc').onsubmit=e=>{
  e.preventDefault();
