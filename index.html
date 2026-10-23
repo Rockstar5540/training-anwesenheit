@@ -8,9 +8,15 @@
 <title>OZ-Training</title>
 <style>
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{font-family:system-ui,sans-serif;margin:0;background:#f1f5f1;color:#111}
+button{cursor:pointer;transition:transform .08s,filter .08s,opacity .08s}
+button:active:not(:disabled){transform:scale(.95);filter:brightness(.8)}
+button.busy{opacity:.5;pointer-events:none}
 header{background:#2e7d32;color:#fff;padding:12px;position:sticky;top:0;z-index:2}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.topr{display:flex;align-items:center;gap:8px}
+#who{background:#fff3;border-radius:14px;padding:6px 12px;font-size:15px;font-weight:600}
 h1{font-size:18px;margin:0}
 header button{background:#fff3;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:16px}
 .nav{display:flex;justify-content:space-between;align-items:center}
@@ -20,14 +26,26 @@ main{padding:10px;max-width:600px;margin:auto}
 .box{display:flex;gap:6px;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;padding:10px;margin-bottom:10px;box-shadow:0 1px 3px #0002}
 .box input{flex:1;padding:12px;font-size:16px;border:1px solid #bbb;border-radius:8px;min-width:0}
 .box button{padding:12px 16px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
+.mbar{background:#e8f5e9;border:2px solid #2e7d32}
+.small{font-size:13px;color:#2e7d32}
+.bigname{font-size:22px;font-weight:700}
 #admin{background:#fff;border-radius:10px;padding:10px;margin-bottom:12px;box-shadow:0 1px 3px #0002}
 #admin h2{margin:0 0 8px;font-size:16px}
 details{border-top:1px solid #eee;padding:6px 0}
 summary{font-weight:600;padding:8px 0}
 .row{display:flex;gap:6px;margin:6px 0;flex-wrap:wrap}
 .row input,.row select{flex:1;min-width:90px;padding:10px;font-size:16px;border:1px solid #bbb;border-radius:8px}
+.mono{font-family:monospace;letter-spacing:1px}
 .row button,dialog button{padding:10px 14px;font-size:16px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
+.row button.sec{background:#777}
 .pl{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #eee}
+.mrow{padding:10px 0;border-top:1px solid #eee}
+.mname{font-weight:700;font-size:17px}
+.mcode{font-family:monospace;font-size:22px;letter-spacing:2px;background:#f1f5f1;border-radius:6px;padding:4px 10px;display:inline-block;margin:6px 0}
+.macts{display:flex;gap:6px;flex-wrap:wrap}
+.macts button{padding:9px 12px;font-size:14px;border:0;border-radius:8px;background:#2e7d32;color:#fff}
+.macts button.sec{background:#777}
+.macts button.danger{background:#c62828}
 .day{background:#fff;border-radius:10px;margin-bottom:10px;box-shadow:0 1px 3px #0002;overflow:hidden}
 .day.today{outline:3px solid #2e7d32}
 .dh{padding:10px 12px;background:#e3efe3;font-weight:600}
@@ -45,24 +63,26 @@ label.p.on{background:#e8f5e9}
 .empty{padding:12px;color:#777}
 dialog{border:0;border-radius:12px;padding:16px;width:90%;max-width:360px}
 dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:8px;border:1px solid #bbb;border-radius:8px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#222;color:#fff;padding:12px 20px;border-radius:24px;z-index:10;max-width:90%;box-shadow:0 2px 8px #0005;opacity:0;pointer-events:none;transition:opacity .2s;text-align:center}
+#toast.show{opacity:1}
+#toast.bad{background:#c62828}
 </style>
 </head>
 <body>
 <header>
-<div class='top'><h1>OZ-Training</h1><button id='loginBtn'>Admin</button></div>
+<div class='top'><h1>OZ-Training</h1><div class='topr'><span id='who' hidden></span><button id='loginBtn'>Admin</button></div></div>
 <div class='nav'><button id='prev'>&lt;</button><span id='wk'></span><button id='next'>&gt;</button></div>
 </header>
 <main>
-<div id='err' class='err' hidden></div>
 <form id='fc' class='box'><input id='code' placeholder='Dein Code' autocomplete='off' autocapitalize='characters'><button>Anmelden</button></form>
-<div id='mbar' class='box' hidden><span id='mname'></span><button id='mout' type='button'>Abmelden</button></div>
+<div id='mbar' class='box mbar' hidden><div><div class='small'>Angemeldet als</div><div id='mname' class='bigname'></div></div><button id='mout' type='button'>Abmelden</button></div>
 <section id='admin' hidden>
 <h2>Admin</h2>
 <details open><summary>Training anlegen</summary>
 <form id='ft' class='row'><select id='td'></select><input id='tt' type='time' value='18:00'><select id='tty'></select><select id='tlo'></select><input id='tmax' type='number' min='1' value='12' placeholder='Max'><input id='tn' placeholder='Notiz (optional)'><button>+ Training</button></form>
 </details>
 <details><summary>Mitglieder &amp; Codes</summary>
-<form id='fp' class='row'><input id='pn' placeholder='Name'><input id='pc' placeholder='Code (mind. 8 Zeichen)' autocomplete='off'><button>+ Mitglied</button></form>
+<form id='fp' class='row'><input id='pn' placeholder='Name'><input id='pc' class='mono' placeholder='Code (mind. 8 Zeichen)' autocomplete='off'><button type='button' id='pg' class='sec'>Neu erzeugen</button><button>+ Mitglied</button></form>
 <div id='plist'></div>
 </details>
 <details><summary>Trainingstypen</summary>
@@ -80,6 +100,7 @@ dialog input{display:block;width:100%;padding:10px;font-size:16px;margin-bottom:
 </section>
 <div id='days'></div>
 </main>
+<div id='toast'></div>
 <dialog id='dlg'>
 <form id='fl'>
 <h3>Admin-Login</h3>
@@ -96,17 +117,29 @@ import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInAnonymously,
 const cfg={apiKey:'AIzaSyAmaVTns_UeAJs2iAp-EgJ-wp0nQJSNM4E',authDomain:'oz-training.firebaseapp.com',projectId:'oz-training',storageBucket:'oz-training.firebasestorage.app',messagingSenderId:'171662092227',appId:'1:171662092227:web:cca56365d6348527d23f76'};
 const ADMIN_UID='sbmdtQ4EObXPvRKpiqbgtdkJ5Dp2';
 const DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+const ALPHA='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const app=initializeApp(cfg),db=getFirestore(app),auth=getAuth(app);
 const $=id=>document.getElementById(id);
-let types=[],locs=[],members=[],templates=[],trainings=[],att={},unsubA={},unsubT=null,unsubM=null,unsubV=null;
+let types=[],locs=[],members=[],templates=[],trainings=[],att={},unsubA={},unsubT=null,unsubM=null,unsubV=null,tt=null;
 let admin=false,member=null,user=null,off=0;
 const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const normCode=s=>(s||'').toUpperCase().replace(/[^A-Z0-9-]/g,'');
+const fmtCode=c=>c.length===8?c.slice(0,4)+' '+c.slice(4):c;
+function genCode(){const a=new Uint32Array(8);crypto.getRandomValues(a);let s='';a.forEach(v=>{s+=ALPHA[v%ALPHA.length]});return s}
+async function newCode(){for(let i=0;i<8;i++){const c=genCode();if(!(await getDoc(doc(db,'codes',c))).exists())return c}throw new Error('Kein freier Code gefunden')}
 const tName=id=>(types.find(x=>x.id===id)||{}).name||'';
 const lName=id=>(locs.find(x=>x.id===id)||{}).name||'';
 function monday(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)+off*7);return d}
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
-function showErr(e){const b=$('err');b.textContent='Fehler: '+(e.code||e.message);b.hidden=false;setTimeout(()=>{b.hidden=true},6000)}
+function toast(msg,bad){const t=$('toast');t.textContent=msg;t.className='show'+(bad?' bad':'');clearTimeout(tt);tt=setTimeout(()=>{t.className=''},bad?4500:2200)}
+function showErr(e){toast('Fehler: '+(e.code||e.message),true)}
+function run(btn,p,msg){
+ if(btn)btn.classList.add('busy');
+ return Promise.resolve(p).then(r=>{if(msg)toast(msg);return r}).catch(showErr).finally(()=>{if(btn)btn.classList.remove('busy')});
+}
+async function copyText(s,msg){try{await navigator.clipboard.writeText(s);toast(msg)}catch(e){prompt('Zum Kopieren markieren:',s)}}
+function inviteText(m){return 'Hallo '+m.name+', hier kannst du dich fürs OZ-Training anmelden: '+location.origin+location.pathname.replace('index.html','')+'  Dein persönlicher Code: '+fmtCode(m.code)}
+async function shareInvite(m){const s=inviteText(m);if(navigator.share){try{await navigator.share({text:s})}catch(e){}}else copyText(s,'Einladung kopiert ✓')}
 async function setBooking(t,mid,on,force){
  await runTransaction(db,async tx=>{
   const tr=doc(db,'trainings',t.id),ar=doc(db,'trainings',t.id,'att',mid);
@@ -116,22 +149,30 @@ async function setBooking(t,mid,on,force){
   if(!on&&a.exists()){tx.delete(ar);tx.update(tr,{booked:Math.max(0,b-1)})}
  });
 }
-function book(t,mid,on,force){setBooking(t,mid,on,force).catch(e=>showErr(e.message==='belegt'?{message:'Training ist belegt'}:e))}
+function book(t,mid,on,force,btn){
+ if(btn){btn.classList.add('busy');if(btn.tagName==='BUTTON')btn.textContent='…';else btn.disabled=true}
+ return setBooking(t,mid,on,force).then(()=>toast(on?'Gebucht ✓':'Storniert ✓')).catch(e=>showErr(e.message==='belegt'?{message:'Training ist belegt'}:e)).finally(()=>render());
+}
 async function delTraining(t){const s=await getDocs(collection(db,'trainings',t.id,'att'));await Promise.all(s.docs.map(d=>deleteDoc(d.ref)));await deleteDoc(doc(db,'trainings',t.id))}
-function setMax(t){const v=parseInt(prompt('Max. Teilnehmer',t.max??12),10);if(!(v>=1))return;if(v<(t.booked||0)){alert('Weniger als die aktuellen Buchungen ('+(t.booked||0)+') ist nicht möglich');return}updateDoc(doc(db,'trainings',t.id),{max:v}).catch(showErr)}
+function setMax(t){
+ const v=parseInt(prompt('Max. Teilnehmer',t.max??12),10);if(!(v>=1))return;
+ if(v<(t.booked||0)){toast('Weniger als die aktuellen Buchungen ('+(t.booked||0)+') ist nicht möglich',true);return}
+ run(null,updateDoc(doc(db,'trainings',t.id),{max:v}),'Max. gespeichert ✓');
+}
 function fillSel(id,items){const s=$(id),v=s.value;s.innerHTML='';items.forEach(x=>s.append(new Option(x.name,x.id)));if(items.find(x=>x.id===v))s.value=v}
 function simpleList(boxId,coll,items,field){
  const box=$(boxId);box.innerHTML='';
  items.forEach(x=>{
   const r=el('div','pl'),b=el('span','');r.append(el('span','',x.name));
-  const e=el('button','x','✎');e.onclick=()=>{const v=prompt('Neuer Name',x.name);if(v&&v.trim())updateDoc(doc(db,coll,x.id),{name:v.trim()}).catch(showErr)};
-  const d=el('button','x','✕');d.onclick=async()=>{
-   try{
-    const u1=await getDocs(query(collection(db,'trainings'),where(field,'==',x.id),limit(1)));
-    const u2=await getDocs(query(collection(db,'templates'),where(field,'==',x.id),limit(1)));
-    if(!u1.empty||!u2.empty){alert('Wird noch verwendet und kann nicht gelöscht werden.');return}
-    if(confirm(x.name+' löschen?'))await deleteDoc(doc(db,coll,x.id));
-   }catch(err){showErr(err)}};
+  const e=el('button','x','✎');e.title='Umbenennen';
+  e.onclick=()=>{const v=prompt('Neuer Name',x.name);if(v&&v.trim())run(e,updateDoc(doc(db,coll,x.id),{name:v.trim()}),'Gespeichert ✓')};
+  const d=el('button','x','✕');d.title='Löschen';
+  d.onclick=()=>run(d,(async()=>{
+   const u1=await getDocs(query(collection(db,'trainings'),where(field,'==',x.id),limit(1)));
+   const u2=await getDocs(query(collection(db,'templates'),where(field,'==',x.id),limit(1)));
+   if(!u1.empty||!u2.empty)throw new Error('Wird noch verwendet und kann nicht gelöscht werden');
+   if(confirm(x.name+' löschen?')){await deleteDoc(doc(db,coll,x.id));toast('Gelöscht ✓')}
+  })());
   b.append(e,d);r.append(b);box.append(r)});
 }
 function fillRefs(){
@@ -141,29 +182,42 @@ function fillRefs(){
 }
 function fillPlist(){
  const box=$('plist');box.innerHTML='';
+ if(!members.length)box.append(el('div','empty','Noch keine Mitglieder'));
  members.forEach(m=>{
-  const r=el('div','pl'),b=el('span','');r.append(el('span','',m.name+'  ['+m.code+']'));
-  const e=el('button','x','✎');e.onclick=()=>editMember(m).catch(showErr);
-  const d=el('button','x','✕');d.onclick=()=>delMember(m).catch(showErr);
-  b.append(e,d);r.append(b);box.append(r)});
+  const r=el('div','mrow');
+  r.append(el('div','mname',m.name),el('div','mcode',fmtCode(m.code)));
+  const a=el('div','macts');
+  const mk=(t,cls,fn)=>{const b=el('button',cls,t);b.type='button';b.onclick=()=>fn(b);a.append(b)};
+  mk('Einladung teilen','',()=>shareInvite(m));
+  mk('Code kopieren','sec',()=>copyText(m.code,'Code kopiert ✓'));
+  mk('Neuer Code','sec',b=>run(b,regenCode(m)));
+  mk('Bearbeiten','sec',b=>run(b,editMember(m)));
+  mk('Löschen','danger',b=>run(b,delMember(m)));
+  r.append(a);box.append(r)});
 }
 function fillVlist(){
  const box=$('vlist');box.innerHTML='';
  templates.slice().sort((a,b)=>a.weekday-b.weekday||(a.time||'').localeCompare(b.time||'')).forEach(v=>{
   const r=el('div','pl');r.append(el('span','',DAYS[v.weekday]+' '+v.time+' · '+(tName(v.typeId)||'–')+' · '+(lName(v.locationId)||'–')+' · max '+v.max));
-  const d=el('button','x','✕');d.onclick=()=>{if(confirm('Vorlage löschen?'))deleteDoc(doc(db,'templates',v.id)).catch(showErr)};
+  const d=el('button','x','✕');d.onclick=()=>{if(confirm('Vorlage löschen?'))run(d,deleteDoc(doc(db,'templates',v.id)),'Vorlage gelöscht ✓')};
   r.append(d);box.append(r)});
+}
+async function regenCode(m){
+ if(!confirm('Neuen Code für '+m.name+' erzeugen? Der alte Code funktioniert danach nicht mehr.'))return;
+ const c=await newCode(),b=writeBatch(db);
+ b.delete(doc(db,'codes',m.code));b.set(doc(db,'codes',c),{memberId:m.id,name:m.name});b.update(doc(db,'members',m.id),{code:c});
+ await b.commit();toast('Neuer Code: '+fmtCode(c));
 }
 async function editMember(m){
  const n=prompt('Name',m.name);if(!n||!n.trim())return;
  const c=normCode(prompt('Code (mind. 8 Zeichen)',m.code));
- if(c.length<8){alert('Code zu kurz');return}
- if(c!==m.code&&(await getDoc(doc(db,'codes',c))).exists()){alert('Code schon vergeben');return}
+ if(c.length<8){toast('Code zu kurz (mind. 8 Zeichen)',true);return}
+ if(c!==m.code&&(await getDoc(doc(db,'codes',c))).exists()){toast('Code schon vergeben',true);return}
  const b=writeBatch(db);
  if(c!==m.code)b.delete(doc(db,'codes',m.code));
  b.set(doc(db,'codes',c),{memberId:m.id,name:n.trim()});
  b.update(doc(db,'members',m.id),{name:n.trim(),code:c});
- await b.commit();
+ await b.commit();toast('Gespeichert ✓');
 }
 async function delMember(m){
  if(!confirm(m.name+' löschen? Buchungen ab heute werden entfernt.'))return;
@@ -172,6 +226,7 @@ async function delMember(m){
   const ar=doc(db,'trainings',t.id,'att',m.id),a=await getDoc(ar);
   if(a.exists()){const b=writeBatch(db);b.delete(ar);b.update(t.ref,{booked:Math.max(0,(t.data().booked||0)-1)});await b.commit()}}
  const b=writeBatch(db);b.delete(doc(db,'codes',m.code));b.delete(doc(db,'members',m.id));await b.commit();
+ toast('Mitglied gelöscht ✓');
 }
 function fillDays(){
  const m=monday(),s=$('td');s.innerHTML='';
@@ -194,8 +249,8 @@ function render(){
    h.append(el('b','',(t.time||'')+' · '+(tName(t.typeId)||'–')+' · '+(lName(t.locationId)||'–')));
    h.append(el('span','cnt',admin?booked+' / '+mx:(free>0?free+' frei':'belegt')));
    if(admin){
-    const ed=el('button','x','✎');ed.onclick=()=>setMax(t);
-    const x=el('button','x','✕');x.onclick=()=>{if(confirm('Training löschen?'))delTraining(t).catch(showErr)};
+    const ed=el('button','x','✎');ed.title='Max. Teilnehmer ändern';ed.onclick=()=>setMax(t);
+    const x=el('button','x','✕');x.title='Training löschen';x.onclick=()=>{if(confirm('Training löschen?'))run(x,delTraining(t),'Training gelöscht ✓')};
     h.append(ed,x)}
    tr.append(h);
    if(t.note)tr.append(el('div','who',t.note));
@@ -205,12 +260,12 @@ function render(){
     members.forEach(p=>{
      const on=set.has(p.id),l=el('label','p'+(on?' on':''));
      const cb=document.createElement('input');cb.type='checkbox';cb.checked=on;
-     cb.onchange=()=>{const force=cb.checked&&booked>=mx;if(force&&!confirm('Training ist belegt. Trotzdem hinzufügen?')){cb.checked=false;return}book(t,p.id,cb.checked,force)};
+     cb.onchange=()=>{const force=cb.checked&&booked>=mx;if(force&&!confirm('Training ist belegt. Trotzdem hinzufügen?')){cb.checked=false;return}book(t,p.id,cb.checked,force,cb)};
      l.append(cb,el('span','',p.name));tr.append(l)});
    }else if(member){
     const mine=att[t.id]===true,full=free<=0;
     const b=el('button','btn'+(mine?' on':''),mine?'✓ Gebucht – antippen zum Stornieren':(full?'belegt':'Buchen'));
-    b.disabled=full&&!mine;b.onclick=()=>book(t,member.id,!mine,false);tr.append(b);
+    b.disabled=full&&!mine;b.onclick=()=>book(t,member.id,!mine,false,b);tr.append(b);
    }else tr.append(el('div','empty','Zum Buchen oben mit deinem Code anmelden'));
    box.append(tr)});
   root.append(box)}
@@ -223,6 +278,7 @@ function attach(t){
 function startAdmin(){
  if(!unsubM)unsubM=onSnapshot(query(collection(db,'members'),orderBy('name')),s=>{members=s.docs.map(d=>({id:d.id,...d.data()}));fillPlist();render()},showErr);
  if(!unsubV)unsubV=onSnapshot(collection(db,'templates'),s=>{templates=s.docs.map(d=>({id:d.id,...d.data()}));fillVlist()},showErr);
+ if(!$('pc').value)$('pc').value=genCode();
 }
 function stopAdmin(){if(unsubM){unsubM();unsubM=null}if(unsubV){unsubV();unsubV=null}members=[];templates=[];fillPlist();fillVlist()}
 function updateUI(){
@@ -230,7 +286,9 @@ function updateUI(){
  $('loginBtn').textContent=admin?'Abmelden':'Admin';
  $('fc').hidden=admin||!!member;
  $('mbar').hidden=admin||!member;
- $('mname').textContent=member?'Angemeldet: '+member.name:'';
+ $('mname').textContent=member?member.name:'';
+ const w=admin?'Admin':(member?member.name:'');
+ $('who').textContent=w;$('who').hidden=!w;
 }
 function setRole(){
  Object.values(unsubA).forEach(f=>f());unsubA={};att={};
@@ -260,45 +318,46 @@ onSnapshot(query(collection(db,'locations'),orderBy('name')),s=>{locs=s.docs.map
 DAYS.forEach((n,i)=>$('vd').append(new Option(n,String(i))));
 $('prev').onclick=()=>{off--;watchWeek()};
 $('next').onclick=()=>{off++;watchWeek()};
-$('fty').onsubmit=e=>{e.preventDefault();const v=$('tyn').value.trim();if(!v)return;addDoc(collection(db,'types'),{name:v}).then(()=>{$('tyn').value=''}).catch(showErr)};
-$('fo').onsubmit=e=>{e.preventDefault();const v=$('lon').value.trim();if(!v)return;addDoc(collection(db,'locations'),{name:v}).then(()=>{$('lon').value=''}).catch(showErr)};
-$('fp').onsubmit=async e=>{
+$('pg').onclick=()=>{$('pc').value=genCode();toast('Neuer Code erzeugt')};
+$('fty').onsubmit=e=>{e.preventDefault();const v=$('tyn').value.trim();if(!v)return;run(e.submitter,addDoc(collection(db,'types'),{name:v}).then(()=>{$('tyn').value=''}),'Typ hinzugefügt ✓')};
+$('fo').onsubmit=e=>{e.preventDefault();const v=$('lon').value.trim();if(!v)return;run(e.submitter,addDoc(collection(db,'locations'),{name:v}).then(()=>{$('lon').value=''}),'Ort hinzugefügt ✓')};
+$('fp').onsubmit=e=>{
  e.preventDefault();
  const n=$('pn').value.trim(),c=normCode($('pc').value);
- if(!n)return;
- if(c.length<8){alert('Code: mindestens 8 Zeichen (Buchstaben, Zahlen, Bindestrich)');return}
- try{
-  if((await getDoc(doc(db,'codes',c))).exists()){alert('Code schon vergeben');return}
+ if(!n){toast('Name fehlt',true);return}
+ if(c.length<8){toast('Code: mindestens 8 Zeichen',true);return}
+ run(e.submitter,(async()=>{
+  if((await getDoc(doc(db,'codes',c))).exists())throw new Error('Code schon vergeben');
   const ref=doc(collection(db,'members')),b=writeBatch(db);
   b.set(ref,{name:n,code:c});b.set(doc(db,'codes',c),{memberId:ref.id,name:n});
-  await b.commit();$('pn').value='';$('pc').value='';
- }catch(err){showErr(err)}
+  await b.commit();$('pn').value='';$('pc').value=genCode();
+ })(),'Mitglied hinzugefügt ✓');
 };
 $('ft').onsubmit=e=>{
  e.preventDefault();
- if(!$('tty').value||!$('tlo').value){alert('Zuerst Typ und Ort anlegen');return}
- const mx=parseInt($('tmax').value,10);if(!(mx>=1)){alert('Max. Teilnehmer ungültig');return}
- addDoc(collection(db,'trainings'),{date:$('td').value,time:$('tt').value,note:$('tn').value.trim(),typeId:$('tty').value,locationId:$('tlo').value,max:mx,booked:0,templateId:null}).then(()=>{$('tn').value=''}).catch(showErr);
+ if(!$('tty').value||!$('tlo').value){toast('Zuerst Typ und Ort anlegen',true);return}
+ const mx=parseInt($('tmax').value,10);if(!(mx>=1)){toast('Max. Teilnehmer ungültig',true);return}
+ run(e.submitter,addDoc(collection(db,'trainings'),{date:$('td').value,time:$('tt').value,note:$('tn').value.trim(),typeId:$('tty').value,locationId:$('tlo').value,max:mx,booked:0,templateId:null}).then(()=>{$('tn').value=''}),'Training angelegt ✓');
 };
 $('fv').onsubmit=e=>{
  e.preventDefault();
- if(!$('vty').value||!$('vlo').value){alert('Zuerst Typ und Ort anlegen');return}
- const mx=parseInt($('vmax').value,10);if(!(mx>=1)){alert('Max. Teilnehmer ungültig');return}
- addDoc(collection(db,'templates'),{weekday:parseInt($('vd').value,10),time:$('vt').value,typeId:$('vty').value,locationId:$('vlo').value,max:mx,active:true}).catch(showErr);
+ if(!$('vty').value||!$('vlo').value){toast('Zuerst Typ und Ort anlegen',true);return}
+ const mx=parseInt($('vmax').value,10);if(!(mx>=1)){toast('Max. Teilnehmer ungültig',true);return}
+ run(e.submitter,addDoc(collection(db,'templates'),{weekday:parseInt($('vd').value,10),time:$('vt').value,typeId:$('vty').value,locationId:$('vlo').value,max:mx,active:true}),'Vorlage angelegt ✓');
 };
-$('fc').onsubmit=async e=>{
+$('fc').onsubmit=e=>{
  e.preventDefault();
  const c=normCode($('code').value);if(!c)return;
- try{
+ run(e.submitter,(async()=>{
   if(!user)throw new Error('Noch nicht verbunden, bitte nochmals versuchen');
-  if(!(await claim(c))){alert('Code ungültig');return}
-  $('code').value='';setRole();
- }catch(err){showErr(err)}
+  if(!(await claim(c)))throw new Error('Code ungültig');
+  $('code').value='';setRole();toast('Angemeldet als '+member.name+' ✓');
+ })());
 };
-$('mout').onclick=()=>{if(user)deleteDoc(doc(db,'claims',user.uid)).catch(()=>{});localStorage.removeItem('code');member=null;setRole()};
-$('loginBtn').onclick=()=>{if(admin)signOut(auth);else{$('lerr').hidden=true;$('dlg').showModal()}};
+$('mout').onclick=()=>{if(user)deleteDoc(doc(db,'claims',user.uid)).catch(()=>{});localStorage.removeItem('code');member=null;setRole();toast('Abgemeldet')};
+$('loginBtn').onclick=()=>{if(admin)signOut(auth).then(()=>toast('Abgemeldet'));else{$('lerr').hidden=true;$('dlg').showModal()}};
 $('cx').onclick=()=>$('dlg').close();
-$('fl').onsubmit=e=>{e.preventDefault();signInWithEmailAndPassword(auth,$('em').value.trim(),$('pw').value).then(()=>{$('pw').value='';$('dlg').close()}).catch(()=>{$('lerr').textContent='Login fehlgeschlagen';$('lerr').hidden=false})};
+$('fl').onsubmit=e=>{e.preventDefault();run(e.submitter,signInWithEmailAndPassword(auth,$('em').value.trim(),$('pw').value).then(()=>{$('pw').value='';$('dlg').close();toast('Admin angemeldet ✓')}).catch(()=>{$('lerr').textContent='Login fehlgeschlagen';$('lerr').hidden=false}))};
 onAuthStateChanged(auth,async u=>{
  user=u;member=null;
  if(!u){admin=false;setRole();signInAnonymously(auth).catch(showErr);return}
